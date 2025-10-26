@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      <nav class="navbar" th:fragment="headerFragment">
+
+    <div>
+        <a th:href="@{/}" class="navbar-logo">Musical Ticket</a>
+    </div>
+
+    <div class="navbar-menu">
+        
+        <div sec:authorize="isAnonymous()">
+            <a th:href="@{/members/login}">로그인</a>
+            <a th:href="@{/members/new}">회원가입</a>
+        </div>
+
+        <div sec:authorize="isAuthenticated()">
+            <span classs="navbar-username" th:text="|${#authentication.name}님 환영합니다!|">
+                사용자이름
+            </span>
+            <a th:href="@{/members/logout}">로그아웃</a>
+            </div>
+
+    </div>
+</nav>
+
+</html>

@@ -14,6 +14,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @Controller
@@ -59,5 +61,14 @@ public class MemberController {
          return "redirect:/";
     }
 
-
+    // 로그인 페이지를 보여주는 매서드
+    @GetMapping("/login")
+    public String showLoginForm(Model model, @RequestParam(value = "error",required = false)boolean error){
+        
+        if (error) {
+            model.addAttribute("loginErrorMsg", "아이디 또는 비밀번호를 확인해주세요.");
+        } 
+        return "members/loginForm"; // templates/members/loginForm.html
+      }
+    
 }

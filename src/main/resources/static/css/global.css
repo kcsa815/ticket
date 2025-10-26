@@ -1,0 +1,55 @@
+/* src/main/resources/static/css/global.css */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+}
+
+/* 헤더 네비게이션 바 */
+.navbar {
+    display: flex;
+    justify-content: space-between; /* 양쪽 끝으로 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    padding: 1rem 2rem;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e9ecef;
+}
+
+/* 로고 (메인으로 가는 링크) */
+.navbar-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #007bff;
+    text-decoration: none;
+}
+
+/* 메뉴 링크 (로그인/로그아웃 등) */
+.navbar-menu {
+    display: flex;
+    gap: 1.5rem; /* 메뉴 아이템 사이 간격 */
+    align-items: center;
+}
+
+.navbar-menu a {
+    color: #495057;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.navbar-menu a:hover {
+    color: #007bff;
+}
+
+/* "OOO님 환영합니다" 텍스트 */
+.navbar-username {
+    color: #343a40;
+    font-weight: 500;
+}
+
+/* 메인 컨텐츠 영역 (헤더와 구분) */
+.main-content {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
