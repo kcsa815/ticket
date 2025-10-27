@@ -32,11 +32,17 @@ public class SecurityConfig {
                 .requestMatchers("/", "/members/new", "/members/login").permitAll()
                 // CSS, JS, 이미지 등 정적 자원도 모두 접근 가능 (나중을 위해)
                 .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
-                // "/admin/**" 경로는 "ADMIN" 권한을 가진 사용자만 접근 가능
-                .requestMatchers("/admin/**").hasRole("ADMIN")
-                // 위에서 설정한 URL 외의 모든 요청은
+                
+               // .requestMatchers("/admin/**").hasRole("ADMIN") //관리자 역할 부여하면 이거 쓸거임.
+                .requestMatchers("/admin/**").permitAll() //admin/ 경로로 접근하는거 모두 허용, 임시 조치.
+                .requestMatchers("/h2-console/**").permitAll()
+
                 .anyRequest().authenticated() // <-- (이전 permitAll()에서 변경) 인증(로그인)된 사용자만 접근 가능
             )
+
+            .headers(headers -> headers
+                .frameOptions(frameOptions -> frameOptions.disable())
+            )   
             
             // 2. CSRF 보호 비활성화 (개발 초기 단계)
             .csrf(csrf -> csrf.disable())
