@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공연 수정 - 관리자 페이지</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body>
+    <div class="admin-container">
+        <h1>공연 수정</h1>
+        <p>기존 뮤지컬 공연 정보를 수정합니다.</p>
+
+        <form id="edit-form" th:object="${show}" th:action="@{|/admin/edit/${show.id}|}" method="post">
+            
+            <input type="hidden" th:field="*{id}" />
+
+            <div class="form-group">
+                <label for="title">공연명:</label>
+                <input type="text" id="title" th:field="*{title}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="poster">포스터 URL:</label>
+                <input type="url" id="poster" th:field="*{posterUrl}" placeholder="http://example.com/poster.jpg">
+            </div>
+
+            <div class="form-group">
+                <label for="start-date">공연 시작일:</label>
+                <input type="date" id="start-date" th:value="${#temporals.format(show.startDate, 'yyyy-MM-dd')}" name="startDate" required>
+            </div>
+
+            <div class="form-group">
+                <label for="end-date">공연 종료일:</label>
+                <input type="date" id="end-date" th:value="${#temporals.format(show.endDate, 'yyyy-MM-dd')}" name="endDate" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">공연 설명:</label>
+                <textarea id="description" th:field="*{description}" rows="5"></textarea>
+            </div>
+
+            <fieldset>
+                <legend>좌석 정보</legend>
+                <div class="form-group">
+                    <label for="vip-price">VIP석 가격:</label>
+                    <input type="number" id="vip-price" th:field="*{vipPrice}" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="vip-seats">VIP석 총 수량:</label>
+                    <input type="number" id="vip-seats" th:field="*{vipTotalSeats}" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="r-price">R석 가격:</label>
+                    <input type="number" id="r-price" th:field="*{rPrice}" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="r-seats">R석 총 수량:</label>
+                    <input type="number" id="r-seats" th:field="*{rTotalSeats}" min="0">
+                </div>
+                
+                <div class="form-group">
+                    <label for="s-price">S석 가격:</label>
+                    <input type="number" id="s-price" th:field="*{sPrice}" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="s-seats">S석 총 수량:</label>
+                    <input type="number" id="s-seats" th:field="*{sTotalSeats}" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="a-price">A석 가격:</label>
+                    <input type="number" id="a-price" th:field="*{aPrice}" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="a-seats">A석 총 수량:</label>
+                    <input type="number" id="a-seats" th:field="*{aTotalSeats}" min="0">
+                </div>
+            </fieldset>
+
+            <button type="submit" class="submit-btn">공연 수정하기</button>
+        </form>
+    </div>
+
+    <script th:src="@{/js/admin.js}"></script>
+</body>
+</html>

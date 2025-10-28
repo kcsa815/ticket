@@ -2,6 +2,8 @@ package com.musical.ticket.entity;
 
 import java.time.LocalDate;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.musical.ticket.dto.AdminShowRegisterDto;
 
 import jakarta.persistence.Column;
@@ -27,9 +29,11 @@ public class Show {
     @Column(nullable = false)
     private String posterUrl;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "end_date", nullable = false)
     private LocalDate endDate;
 
@@ -91,6 +95,118 @@ public class Show {
             }
         }   
         return show;
+    }
+    //Getters 추가
+    public Long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getPosterUrl() {
+        return posterUrl;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate; 
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getVipPrice() {
+        return vipPrice;
+    }
+
+    public int getVipTotalSeats() {
+        return vipTotalSeats;
+    }
+
+    public int getRPrice() {
+        return rPrice;
+    }
+
+    public int getRTotalSeats() {
+        return rTotalSeats;
+    }
+
+    public int getSPrice() {
+        return sPrice;
+    }
+
+    public int getSTotalSeats() {
+        return sTotalSeats;
+    }
+
+    public int getAPrice() {
+        return aPrice;
+    }
+
+    public int getATotalSeats() {
+        return aTotalSeats;
+    }
+    //Setters 추가
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    public void setPosterUrl(String posterUrl) {
+        this.posterUrl = posterUrl;
+    }
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    public void setVipPrice(int vipPrice) {
+        this.vipPrice = vipPrice;
+    }
+    public void setVipTotalSeats(int vipTotalSeats) {
+        this.vipTotalSeats = vipTotalSeats;
+    }
+    public void setRPrice(int rPrice) {
+        this.rPrice = rPrice;
+    }
+    public void setRTotalSeats(int rTotalSeats) {
+        this.rTotalSeats = rTotalSeats;
+    }
+    public void setSPrice(int sPrice) {
+        this.sPrice = sPrice;
+    }
+    public void setSTotalSeats(int sTotalSeats) {
+        this.sTotalSeats = sTotalSeats;
+    }
+    public void setAPrice(int aPrice) {
+        this.aPrice = aPrice;
+    }
+    public void setATotalSeats(int aTotalSeats) {
+        this.aTotalSeats = aTotalSeats;
+    }
+
+    // 내용 수정(post)가 안되서 디버깅용
+    @Override
+    public String toString() {
+        return "Show{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", posterUrl='" + posterUrl + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", description='" + description + '\'' +
+                ", vipPrice=" + vipPrice +
+                ", rPrice=" + rPrice +
+                // ... (다른 좌석 정보) ...
+                '}';
     }
 
 }

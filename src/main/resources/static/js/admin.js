@@ -63,7 +63,42 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error('공연 등록 중 오류 발생:', error);
                 alert('공연 등록 중 오류가 발생했습니다.');
             }
+
+            
         });
     }
-    // 나중에 '공연 목록' 페이지의 스크립트도 이 파일에 추가할 수 있습니다.
+
+    const deleteButtons = document.querySelectorAll('.delete-btn');
+    
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', async (event) => {
+            event.preventDefault(); 
+
+            const confirmDelete = confirm('정말로 이 공연을 삭제하시겠습니까?');
+            
+            if (confirmDelete) {
+                const showId = button.dataset.showId;
+                
+                try {
+                    const response = await fetch(`/admin/delete/${showId}`, {
+                        method: 'DELETE' // 💡 'DELETE' 메서드 사용
+                    });
+
+                    if (response.ok) {
+                        const resultText = await response.text();
+                        alert(resultText); // (예: "공연이 삭제되었습니다.")
+                        
+                        const row = button.closest('tr');
+                        row.remove();
+
+                    } else {
+                        alert('삭제에 실패했습니다. 서버 로그를 확인하세요.');
+                    }
+                } catch (error) {
+                    console.error('삭제 중 오류 발생:', error);
+                    alert('삭제 중 오류가 발생했습니다.');
+                }
+            }
+        });
+    });
 });
