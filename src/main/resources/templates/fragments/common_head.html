@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="common_head_contents(pageTitle)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title th:text="${pageTitle} + ' - 티켓 월드'">뮤지컬 예매</title>
+
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    
+</th:block>
+</html>

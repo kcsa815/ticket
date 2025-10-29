@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공연 정보</title>
+    <link rel="stylesheet" th:href="@{/css/musical-list.css}"> 
+    </head>
+<body>
+
+    <div class="container">
+        <h1>뮤지컬 둘러보기</h1>
+
+        <div class="empty-list" th:if="${#lists.isEmpty(musicals)}">
+            <p>현재 등록된 공연 정보가 없습니다.</p>
+        </div>
+
+
+        <ul class="musical-list" th:unless="${#lists.isEmpty(musicals)}">
+            
+            <li class="musical-item" th:each="item : ${musicals}">
+                
+                <a th:href="@{/musical/{id}(id=${item.id})}">
+                    
+                    <img th:src="${item.imageUrl}" th:alt="${item.title} + ' 포스터'">
+                    
+                    <h3 th:text="${item.title}">뮤지컬 제목</h3>
+                    
+                    <p th:text="${item.period}">공연 기간</p>
+                </a>
+            </li>
+            </ul>
+        </div>
+</body>
+</html>

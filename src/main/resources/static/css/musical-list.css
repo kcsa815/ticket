@@ -1,0 +1,118 @@
+/* 기본 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* 페이지 중앙 정렬 컨테이너 */
+.container {
+    max-width: 1200px; /* 최대 너비 설정 */
+    margin: 20px auto; /* 상하 20px, 좌우 auto (중앙 정렬) */
+    padding: 20px;
+}
+
+/* 메인 제목 */
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+/* * ⭐️ 공연 목록 그리드 (핵심 부분) ⭐️
+ */
+.musical-list {
+    /* ul 태그의 기본 스타일(점, 들여쓰기) 제거 */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    /* 그리드 레이아웃 적용 */
+    display: grid;
+    
+    /* * 5개의 열을 만듭니다. 
+     * 1fr은 '1 fractional unit'의 약자로, 사용 가능한 공간을
+     * 1:1:1:1:1 비율로 균등하게 나눈다는 의미입니다.
+     */
+    grid-template-columns: repeat(5, 1fr);
+
+    /* 아이템 사이의 간격 */
+    gap: 20px; 
+}
+
+/* 개별 공연 아이템 스타일 */
+.musical-item {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* 이미지가 모서리를 둥글게 하도록 */
+    text-align: center;
+    transition: transform 0.2s; /* 마우스 오버 시 부드러운 효과 */
+}
+
+/* 마우스 올렸을 때 살짝 커지는 효과 */
+.musical-item:hover {
+    transform: scale(1.03);
+}
+
+/* 포스터 이미지 */
+.musical-item img {
+    width: 100%; /* 부모 요소(li)의 너비에 꽉 맞춤 */
+    height: auto; /* 이미지 비율 유지 */
+    display: block;
+}
+
+/* 뮤지컬 제목 */
+.musical-item h3 {
+    font-size: 1.1em;
+    color: #222;
+    margin: 15px 10px 10px; /* 상, 좌우, 하 */
+}
+
+/* 뮤지컬 기간 */
+.musical-item p {
+    font-size: 0.9em;
+    color: #666;
+    margin: 0 10px 15px; /* 상, 좌우, 하 */
+}
+
+.musical-item a {
+    text-decoration: none; /* 밑줄 제거 */
+    color: inherit; /* 부모 요소(li)의 글자 색상을 그대로 상속받음 */
+    display: block; /* a 태그가 li 아이템 영역 전체를 차지하도록 설정 */
+}
+
+.musical-item a:focus {
+    outline: 2px solid #0056b3; /* 포커스 시 파란색 외곽선 */
+    outline-offset: 2px;
+    border-radius: 8px; /* 기존 아이템의 둥근 모서리와 맞춤 */
+}
+
+
+/* * 💡 반응형 웹 디자인 (보너스) 
+ * 화면이 작아지면 5열 유지가 어려우므로 열 개수를 조절합니다.
+ */
+
+/* 태블릿 (예: 1024px 이하) */
+@media (max-width: 1024px) {
+    .musical-list {
+        grid-template-columns: repeat(3, 1fr); /* 3열로 변경 */
+    }
+}
+
+/* 모바일 (예: 768px 이하) */
+@media (max-width: 768px) {
+    .musical-list {
+        grid-template-columns: repeat(2, 1fr); /* 2열로 변경 */
+    }
+}
+
+/* 더 작은 모바일 (예: 480px 이하) */
+@media (max-width: 480px) {
+    .musical-list {
+        grid-template-columns: repeat(1, 1fr); /* 1열로 변경 */
+    }
+}
+

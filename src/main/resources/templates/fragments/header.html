@@ -1,27 +1,47 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-      <nav class="navbar" th:fragment="headerFragment">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<body>
 
-    <div>
-        <a th:href="@{/}" class="navbar-logo">Musical Ticket</a>
-    </div>
+    <header th:fragment="header">
 
-    <div class="navbar-menu">
-        
-        <div sec:authorize="isAnonymous()">
-            <a th:href="@{/members/login}">로그인</a>
-            <a th:href="@{/members/new}">회원가입</a>
+        <div class="header-top-bar">
+            <div class="container">
+                
+                <div class="header-top-left">
+                    <div class="logo">
+                        <a th:href="@{/}">^^ㅣck뮤</a>
+                    </div>
+                    <div class="search-container">
+                        <form th:action="@{/search}" method="get">
+                            <input type="text" name="query" placeholder="공연, 배우를 검색하세요">
+                            <button type="submit"><i class="fi fi-rr-search"></i></button>
+                        </form>
+                    </div>
+                </div>
+
+                <nav class="first-header">
+                    <ul>
+                        <li><a th:href="@{/login}"><i class="fi fi-rr-user"></i> 로그인</a></li>
+                        <li><a th:href="@{/my-reservation}"><i class="fi fi-rr-ticket"></i>내 예약</a></li>
+                    </ul>
+                </nav>
+
+            </div>
         </div>
 
-        <div sec:authorize="isAuthenticated()">
-            <span classs="navbar-username" th:text="|${#authentication.name}님 환영합니다!|">
-                사용자이름
-            </span>
-            <a th:href="@{/members/logout}">로그아웃</a>
+        <nav class="second-header">
+            <div class="container">
+                <ul>
+                    <li><a th:href="@{/musical-list}">뮤지컬</a></li>
+                    <li><a th:href="@{/rankings}">랭킹</a></li>
+                    <li><a th:href="@{/coming-soon}">오픈 예정</a></li>
+                    <li><a th:href="@{/local}">지역별</a></li>
+                    <li><a th:href="@{/venues}">공연장</a></li>
+                </ul>
             </div>
+        </nav>
 
-    </div>
-</nav>
+    </header>
 
+</body>
 </html>

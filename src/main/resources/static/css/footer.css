@@ -1,0 +1,25 @@
+/* 3. 푸터 스타일 */
+footer {
+    background: #333;
+    color: #fff;
+    padding: 40px 0;
+    text-align: center;
+}
+
+footer .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+footer ul {
+    display: flex;
+}
+
+footer ul li {
+    margin-left: 15px;
+}
+
+footer ul li a:hover {
+    text-decoration: underline;
+}

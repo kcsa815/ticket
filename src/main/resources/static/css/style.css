@@ -1,0 +1,215 @@
+/* 기본 스타일 초기화 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+ul {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* 공통 컨테이너: 콘텐츠를 중앙에 모아줍니다. */
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* 2-1. 메인 배너 (Hero) 스타일 */
+.hero {
+    width: 100%;
+    height: 430px;
+    background: #f0f0f0; /* 슬라이드 로딩 중 배경색 */
+}
+
+.main-banner-swiper {
+    width: 100%;
+    height: 100%;
+}
+
+.swiper-slide {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    text-align: left;
+    color: #fff;
+    padding: 100px 0; /* 기존 hero의 padding을 여기로 이동 */
+}
+
+/* 각 슬라이드별 배경 이미지 */
+.swiper-slide.slide-1 {
+    background: url('/images/banner-1.jpg') no-repeat center center/cover;
+}
+.swiper-slide.slide-2 {
+    background: url('/images/banner-2.jpg') no-repeat center center/cover;
+}
+.swiper-slide.slide-3 {
+    background: url('/images/banner-3.jpg') no-repeat center center/cover;
+}
+
+.swiper-slide h1 {
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
+.swiper-slide p {
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+
+/* Swiper 네비게이션/페이지네이션 색상 (기본값이 흰색이라 잘 안보일 수 있음) */
+.swiper-pagination-bullet-active {
+    background: #fff; /* 활성화된 점 색상 */
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+    color: #fff; /* 화살표 색상 */
+}
+
+/* 2-2. 콘텐츠 섹션 (랭킹) 스타일 */
+.content-section {
+    padding: 60px 0;
+    background: #fff;
+}
+
+.content-section h2 {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 40px;
+}
+
+.ranking-list {
+    display: flex;
+    justify-content: space-between; /* 아이템들 사이에 공간 배분 */
+    flex-wrap: wrap; /* 화면이 작아지면 줄바꿈 */
+}
+
+.ranking-item {
+    width: 18%; /* 5개 아이템을 한 줄에 배치 (약간의 여백 고려) */
+    min-width: 150px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.ranking-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.ranking-item h3 {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.ranking-item p {
+    font-size: 14px;
+    color: #666;
+}
+
+.view-all-container {
+    text-align: center; /*버튼 중앙 배치 */
+    margin-top: 30px;
+}
+.view-all-button {
+    display: inline-flex; /* 아이콘과 텍스트 정렬 */
+    align-items: center;
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 10px 20px;
+    border-radius: 20px;
+    color: #555;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+.view-all-button:hover {
+    background: #f8f9fa; /* 헤더 메뉴와 같은 색 */
+    border-color: #ccc;
+    color: #000;
+}
+.view-all-button i {
+    font-size: 14px;
+    line-height: 1; /* 아이콘 세로 정렬을 위함 */
+}
+
+/* --- 2-3. 콘텐츠 섹션 (오픈 예정) --- */
+#coming-soon {
+    background: #f8f9fa; /* 헤더 메뉴와 같은 연한 회색 배경 */
+    /* .content-section의 기본 padding(60px 0)이 적용됩니다. */
+}
+
+.coming-soon-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px; /* 아이템 사이의 간격 */
+}
+
+.coming-soon-item {
+    display: flex; /* 가로가 긴 직사각형 (요청사항) */
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    overflow: hidden; 
+}
+.coming-soon-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.coming-soon-item .item-poster {
+    width: 120px; /* 이미지 영역 너비 고정 */
+    flex-shrink: 0; /* 이미지 영역 축소 방지 */
+}
+.coming-soon-item .item-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 이미지가 영역에 꽉 차게 */
+}
+
+.coming-soon-item .item-info {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* 텍스트 내용 세로 중앙 정렬 */
+}
+
+.coming-soon-item .item-info h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px; 
+}
+
+.coming-soon-item .item-info .open-date {
+    font-size: 14px;
+    color: #d9534f;
+    margin-bottom: 8px;
+}
+
+.coming-soon-item .item-info .ticket-info {
+    font-size: 14px;
+    color: #007bff;
+}
+

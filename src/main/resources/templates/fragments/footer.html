@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+    <footer th:fragment="footer">
+        <div class="container">
+            <p>&copy; 2025 . 웹 사이트 뮤 오 괜찮다이름은 뭘로 하지..한달에한번씩뮤지컬 티켓을 공짜로 줘. 씩뮤</p>
+            <ul>
+                <li><a th:href="@{/terms}">이용약관</a></li>
+                <li><a th:href="@{/privacy}">개인정보처리방침</a></li>
+            </ul>
+        </div>
+
+        <div>
+            <p>Contact: <a th:href="@{/contact}">깃 허브</a></p>
+            <p>E-mail: <a th:href="@{/contact}">kcsa815@gmail.com</a></p>
+            <p>벨로그: <a href="mailto:support@example.com">velog.</a></p>
+            <p>프로그래머스: <a href="tel:+821012345678">프로그래머스</a></p>
+            <p>전화: <span>010-1111-1111</span></p>
+        </div>
+    </footer>
+
+</body>
+</html>

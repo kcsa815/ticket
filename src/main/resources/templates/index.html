@@ -1,34 +1,176 @@
-<!-- index.html : 프로젝트의 대문 역할. spring security와 연동해서 사용자의 로그인 상태 확인함. -->
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"> 
-<head>
-    <meta charset="UTF-8">
-    <title>뮤지컬 티켓 예매</title>
-    <link rel="stylesheet" th:href="@{/css/global.css}">    
-</head>
-<body>
+<html lang="ko">
+  <head>
+    <th:block
+      th:replace="~{fragments/common_head :: common_head_contents('메인 페이지')}"
+    />
+  </head>
+  <body>
+    <div th:replace="~{fragments/header :: header}"></div>
 
-    <div th:replace="~{fragments/header :: headerFragment}"></div>
+    <main>
+      <section class="hero">
+        <div class="swiper main-banner-swiper">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide slide-1">
+              <div class="container">
+                <a href="/musicals/featured-1" class="cta-button"></a>
+              </div>
+            </div>
+            <div class="swiper-slide slide-2">
+              <div class="container">
+                <a href="/musicals/featured-2" class="cta-button"></a>
+              </div>
+            </div>
+            <div class="swiper-slide slide-3">
+              <div class="container">
+                <a href="/musicals/featured-3" class="cta-button"></a>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-pagination"></div>
 
-    <div class="main-content">
-        <h1>🎉 메인 페이지입니다!</h1>
-        <p>뮤지컬 티켓 예매 프로젝트에 오신 것을 환영합니다.</p>
-        
-        <div sec:authorize="isAuthenticated()">
-            <p>로그인되었습니다. 현재 아이디: <strong th:text="${#authentication.name}"></strong></p>
+          <div class="swiper-button-prev"></div>
+          <div class="swiper-button-next"></div>
         </div>
-    </div>
+      </section>
 
-    <div sec:authorize="isAuthenticated()">
-        <p>
-            <span sec:authentication="name"></span>님, 환영합니다!
-        </p>
-        <form th:action="@{/members/logout}" method="post" style="display:inline;">
-            <button type="submit">로그아웃</button>
-        </form>
-        <!-- <a th:href="@{/members/logout}">로그아웃</a>  -->
-    </div>
+      <section class="content-section" id="weekly-ranking">
+        <div class="container">
+          <h2>주간 랭킹 TOP 5</h2>
+          <div class="ranking-list">
+            <div class="ranking-item">
+              <img th:src="@{/images/ranking1.jpg}" alt="뮤지컬 포스터 1" />
+              <h3>1. 뮤지컬 '레미제라블'</h3>
+              <p>2025.10.01 - 2026.03.01</p>
+            </div>
+            <div class="ranking-item">
+              <img th:src="@{/images/ranking2.jpg}" alt="뮤지컬 포스터 2" />
+              <h3>2. 뮤지컬 '오페라의 유령'</h3>
+              <p>2025.11.15 - 2026.04.30</p>
+            </div>
+            <div class="ranking-item">
+              <img th:src="@{/images/ranking3.jpg}" alt="뮤지컬 포스터 3" />
+              <h3>3. 뮤지컬 '위키드'</h3>
+              <p>상시 공연</p>
+            </div>
+            <div class="ranking-item">
+              <img th:src="@{/images/ranking4.jpg}" alt="뮤지컬 포스터 4" />
+              <h3>4. 뮤지컬 '시카고'</h3>
+              <p>2025.12.01 - 2026.02.28</p>
+            </div>
+            <div class="ranking-item">
+              <img th:src="@{/images/ranking5.jpg}" alt="뮤지컬 포스터 5" />
+              <h3>5. 뮤지컬 '라이온 킹'</h3>
+              <p>2025.09.20 - 2026.01.10</p>
+            </div>
+          </div>
 
-</body>
+          <div class="view-all-container">
+            <a th:href="@{/rankings}" class="view-all-button">
+              랭킹 전체보기 &nbsp;<i class="fi fi-rr-angle-right"></i>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section" id="coming-soon">
+        <div class="container">
+          <h2>오픈 예정</h2>
+          <div class="coming-soon-list">
+            <div class="coming-soon-item">
+              <div class="item-poster">
+                <img
+                  th:src="@{/images/coming-soon1.jpg}"
+                  alt="오픈 예정 포스터"
+                />
+              </div>
+              <div class="item-info">
+                <h3>뮤지컬 '렌트'</h3>
+                <p class="open-date">오픈: 2025.11.10 (월) 14:00</p>
+                <p class="ticket-info">일반 예매</p>
+              </div>
+            </div>
+            <div class="coming-soon-item">
+              <div class="item-poster">
+                <img
+                  th:src="@{/images/coming-soon2.jpg}"
+                  alt="오픈 예정 포스터"
+                />
+              </div>
+              <div class="item-info">
+                <h3>연극 '죽은 시인의 사회'</h3>
+                <p class="open-date">오픈: 2025.11.12 (수) 11:00</p>
+                <p class="ticket-info">선예매</p>
+              </div>
+            </div>
+            <div class="coming-soon-item">
+              <div class="item-poster">
+                <img
+                  th:src="@{/images/coming-soon3.jpg}"
+                  alt="오픈 예정 포스터"
+                />
+              </div>
+              <div class="item-info">
+                <h3>콘서트 '겨울밤의 꿈'</h3>
+                <p class="open-date">오픈: 2025.11.15 (토) 16:00</p>
+                <p class="ticket-info">일반 예매</p>
+              </div>
+            </div>
+
+            <div class="coming-soon-item">
+              <div class="item-poster">
+                <img
+                  th:src="@{/images/coming-soon4.jpg}"
+                  alt="오픈 예정 포스터"
+                />
+              </div>
+              <div class="item-info">
+                <h3>뮤지컬 '지킬 앤 하이드'</h3>
+                <p class="open-date">오픈: 2025.11.20 (목) 14:00</p>
+                <p class="ticket-info">일반 예매</p>
+              </div>
+            </div>
+            <div class="coming-soon-item">
+              <div class="item-poster">
+                <img
+                  th:src="@{/images/coming-soon5.jpg}"
+                  alt="오픈 예정 포스터"
+                />
+              </div>
+              <div class="item-info">
+                <h3>뮤지컬 '시카고'</h3>
+                <p class="open-date">오픈: 2025.11.22 (토) 10:00</p>
+                <p class="ticket-info">일반 예매</p>
+              </div>
+            </div>
+            <div class="coming-soon-item">
+              <div class="item-poster">
+                <img
+                  th:src="@{/images/coming-soon6.jpg}"
+                  alt="오픈 예정 포스터"
+                />
+              </div>
+              <div class="item-info">
+                <h3>뮤지컬 '영웅'</h3>
+                <p class="open-date">오픈: 2025.11.25 (화) 17:00</p>
+                <p class="ticket-info">선예매</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="view-all-container">
+            <a th:href="@{/coming-soon}" class="view-all-button">
+              오픈 예정 전체보기 &nbsp;<i class="fi fi-rr-angle-right"></i>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script th:src="@{/js/main.js}"></script>
+  </body>
 </html>
