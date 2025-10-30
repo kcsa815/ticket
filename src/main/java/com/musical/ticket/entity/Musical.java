@@ -1,11 +1,8 @@
 package com.musical.ticket.entity;
 
 import java.time.LocalDate;
-
 import org.springframework.format.annotation.DateTimeFormat;
-
-import com.musical.ticket.dto.AdminShowRegisterDto;
-
+import com.musical.ticket.dto.AdminMusicalRegisterDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,12 +12,12 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "shows")
-public class Show {
+@Table(name = "musicals")
+public class Musical {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //auto-increment
-    @Column(name = "show_id")
+    @Column(name = "musical_id")
     private Long id;
 
     @Column(nullable = false)
@@ -36,6 +33,9 @@ public class Show {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "end_date", nullable = false)
     private LocalDate endDate;
+
+    @Column(name = "venue")
+    private String venue;
 
     @Lob //Large Object : 대용량 텍스트를 위함
     @Column(columnDefinition = "TEXT")
@@ -63,38 +63,38 @@ public class Show {
     private int aTotalSeats;
 
     //jpa는 엔티티 객체를 생성할 때 기본 생성자가 필요함.
-    public Show(){
+    public Musical(){
     }
 
-    public static Show createShow(AdminShowRegisterDto dto){
-        Show show = new Show();
+    public static Musical createShow(AdminMusicalRegisterDto dto){
+        Musical musical = new Musical();
+        musical.title = dto.getTitle();
+        musical.posterUrl = dto.getPosterUrl();
+        musical.startDate = dto.getStartDate();
+        musical.endDate = dto.getEndDate();
+        musical.venue = dto.getVenue();
+        musical.description = dto.getDescription();
 
-        show.title = dto.getTitle();
-        show.posterUrl = dto.getPosterUrl();
-        show.startDate = dto.getStartDate();
-        show.endDate = dto.getEndDate();
-        show.description = dto.getDescription();
-
-        AdminShowRegisterDto.SeatInfo seats = dto.getSeats();
+        AdminMusicalRegisterDto.SeatInfo seats = dto.getSeats();
         if(seats != null){
             if (seats.getVip() !=null) {
-                show.vipPrice = seats.getVip().getPrice();
-                show.vipTotalSeats = seats.getVip().getTotal();
+                musical.vipPrice = seats.getVip().getPrice();
+                musical.vipTotalSeats = seats.getVip().getTotal();
             }
             if (seats.getR() !=null) {
-                show.rPrice = seats.getR().getPrice();
-                show.rTotalSeats = seats.getR().getTotal();
+                musical.rPrice = seats.getR().getPrice();
+                musical.rTotalSeats = seats.getR().getTotal();
             }
             if (seats.getS() !=null) {
-                show.sPrice = seats.getS().getPrice();
-                show.sTotalSeats = seats.getS().getTotal();
+                musical.sPrice = seats.getS().getPrice();
+                musical.sTotalSeats = seats.getS().getTotal();
             }
             if (seats.getA() !=null) {
-                show.aPrice = seats.getA().getPrice();
-                show.aTotalSeats = seats.getA().getTotal();
+                musical.aPrice = seats.getA().getPrice();
+                musical.aTotalSeats = seats.getA().getTotal();
             }
         }   
-        return show;
+        return musical;
     }
     //Getters 추가
     public Long getId() {
@@ -196,7 +196,7 @@ public class Show {
     // 내용 수정(post)가 안되서 디버깅용
     @Override
     public String toString() {
-        return "Show{" +
+        return "Musical{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", posterUrl='" + posterUrl + '\'' +
@@ -205,8 +205,14 @@ public class Show {
                 ", description='" + description + '\'' +
                 ", vipPrice=" + vipPrice +
                 ", rPrice=" + rPrice +
-                // ... (다른 좌석 정보) ...
+                ", sPrice=" + sPrice +
+                ", aPrice=" + aPrice +
                 '}';
+    }
+
+    public static Musical createMusical(AdminMusicalRegisterDto dto) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'createMusical'");
     }
 
 }

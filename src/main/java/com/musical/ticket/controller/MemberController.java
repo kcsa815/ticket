@@ -16,10 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
-
 @Controller
-@RequestMapping("/members") //url이 /members로 시작하는 요청을 처리
+@RequestMapping("/members")
 @RequiredArgsConstructor
 public class MemberController {
     
@@ -28,7 +26,6 @@ public class MemberController {
     //1. 회원가입 폼(html)을 보여주는 메서드
     @GetMapping("/new")
     public String showMemberForm(Model model){
-        //타임리프가 사용할 수 있도록 빈 dto객체를 모델에 담아 보냄
         model.addAttribute("memberFormDto", new MemberFormDto());
         return "members/createMemberForm"; // templates/members/createMemberForm.html 파일을 의미
     }
@@ -38,9 +35,8 @@ public class MemberController {
     public String createMember(@Valid MemberFormDto memberFormDto,
                                 BindingResult bindingResult,
                                 Model model){
-         //@Valid에서 오류가 발생하면 (ex:@NotEmpty 위반)
          if (bindingResult.hasErrors()) {
-            //오류가 있어도 입력한 데이터를 유지하기 위해 dto를 다시 모델에 담아 회원가입 폼으로 돌려보냄
+
             model.addAttribute("memberFormDto", memberFormDto);
             return "members/createMemberForm";
          }  
@@ -63,12 +59,12 @@ public class MemberController {
 
     // 로그인 페이지를 보여주는 매서드
     @GetMapping("/login")
-    public String showLoginForm(Model model, @RequestParam(value = "error",required = false)boolean error){
+    public String loginPage(Model model, @RequestParam(value = "error",required = false)boolean error){
         
         if (error) {
             model.addAttribute("loginErrorMsg", "아이디 또는 비밀번호를 확인해주세요.");
         } 
-        return "members/loginForm"; // templates/members/loginForm.html
+        return "members/loginForm";
       }
     
 }

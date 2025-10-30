@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>관리자 - 공연 리스트</title>
+    
+    <style>
+        .musical-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        a.musical-card { 
+            border: 1px solid #ccc; padding: 10px; text-align: center;
+            display: block; text-decoration: none; color: inherit; 
+        }
+        a.musical-card:hover { box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+
+        a.musical-card img { 
+            width: 100%; height: auto; 
+            aspect-ratio: 2/3; object-fit: cover; 
+        }
+
+        /*  "+ 카드" 스타일  */
+        a.musical-card.add-new-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 2px dashed #ccc;
+            font-size: 1.2em;
+            color: #888;
+            min-height: 300px; /* (높이 조절) */
+        }
+        a.musical-card.add-new-card:hover {
+            background-color: #f9f9f9;
+            border-color: #aaa;
+        }
+        .plus-sign {
+            font-size: 5em;
+            font-weight: 200;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>관리자 - 공연 리스트</h1>
+
+    <div th:if="${musicals.isEmpty()}">
+        <p>현재 등록된 공연이 없습니다.</p>
+    </div>
+
+    <div class="musical-grid" th:unless="${musicals.isEmpty()}">
+
+        <a class="musical-card" 
+           th:each="musical : ${musicals}" 
+           th:href="@{/admin/edit/{id}(id=${musical.id})}">
+
+            <img th:src="@{${musical.posterUrl}}" alt="포스터 이미지"> 
+            <h3 th:text="${musical.title}">공연 제목</h3>
+
+            <p th:text="${musical.startDate}">공연 시작일</p>
+            <p th:text="${musical.endDate}">공연 종료일</p>
+        </a>
+        
+        <a class="musical-card add-new-card" th:href="@{/admin/register}">
+            <span class="plus-sign">+</span>
+            <p>새 공연 등록</p>
+        </a>
+        </div>
+
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>관리자 - 공연 등록</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+        h1, h3 {
+            color: #333;
+        }
+        
+        .register-container {
+            display: flex;
+            flex-wrap: wrap; /* 화면 작아지면 줄바꿈 */
+            max-width: 1300px;
+            margin: auto;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .poster-preview-area {
+            flex: 1; /* 1 비율 */
+            min-width: 350px;
+            padding: 25px;
+            border-right: 1px solid #eee;
+            box-sizing: border-box;
+        }
+        .poster-preview-area h3 {
+            margin-top: 0;
+        }
+        #poster-preview-img {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            aspect-ratio: 3 / 4.2; /* 포스터 비율 */
+            object-fit: cover;
+            border-radius: 8px;
+            margin-top: 15px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            color: #aaa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .form-details-area {
+            flex: 2; /* 2 비율 (더 넓게) */
+            min-width: 450px;
+            padding: 25px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            max-height: 90vh; 
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #555;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="date"],
+        .form-group input[type="number"],
+        .form-group input[type="file"], /* 파일 인풋 스타일 추가 */
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box; 
+            font-size: 14px;
+        }
+        /* 파일 인풋은 패딩이 좀 다르게 먹어서 별도 조정 */
+        .form-group input[type="file"] {
+            padding: 8px 10px;
+        }
+
+        .form-group textarea {
+            resize: vertical; 
+            min-height: 100px;
+        }
+
+        .form-group-inline {
+            display: flex;
+            gap: 15px;
+        }
+        .form-group-inline .form-group {
+            flex: 1;
+        }
+
+        .seat-info-grid {
+            display: grid;
+            grid-template-columns: 80px 1fr 1fr;
+            gap: 12px;
+            align-items: center;
+            margin-top: 10px;
+            margin-bottom: 25px;
+        }
+        .seat-info-grid .grid-header {
+            font-weight: 600;
+            font-size: 0.9em;
+            color: #333;
+            padding-bottom: 5px;
+        }
+        .seat-info-grid label {
+            font-weight: 500;
+            color: #555;
+            text-align: right;
+            padding-right: 10px;
+        }
+        .seat-info-grid input {
+            width: 100%;
+        }
+
+        .submit-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>공연 등록</h1>
+    
+    <form th:action="@{/admin/register}" th:object="${musicalDto}" method="post" enctype="multipart/form-data">
+        
+        <div class="register-container">
+            
+            <div class="poster-preview-area">
+                <h3>포스터 미리보기</h3>
+                <img id="poster-preview-img" 
+                     src="https://via.placeholder.com/400x560.png?text=Poster+Preview" 
+                     alt="포스터 미리보기">
+            </div>
+
+            <div class="form-details-area">
+                
+                <div class="form-group">
+                    <label for="title">공연 제목</label>
+                    <input type="text" id="title" th:field="*{title}" placeholder="공연 제목을 입력하세요" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="posterFile">포스터 이미지</label>
+                    <input type="file" id="posterFile" name="posterFile" accept="image/*" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="venue">공연장</label>
+                    <input type="text" id="venue" th:field="*{venue}" placeholder="예: 드림씨어터" required>
+                </div>
+
+                <div class="form-group-inline">
+                    <div class="form-group">
+                        <label for="startDate">공연 시작일</label>
+                        <input type="date" id="startDate" th:field="*{startDate}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="endDate">공연 종료일</label>
+                        <input type="date" id="endDate" th:field="*{endDate}" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">공연 설명</label>
+                    <textarea id="description" th:field="*{description}" rows="6" placeholder="공연에 대한 설명을 입력하세요"></textarea>
+                </div>
+
+                <h3>좌석 정보</h3>
+                <div class="seat-info-grid">
+                    <div></div> <div class="grid-header">가격 (원)</div>
+                    <div class="grid-header">총 좌석 수</div>
+                    
+                    <label for="vipPrice">VIP석</label>
+                    <input type="number" id="vipPrice" th:field="*{seats.vip.price}" placeholder="가격">
+                    <input type="number" id="vipTotalSeats" th:field="*{seats.vip.total}" placeholder="좌석 수">
+                    
+                    <label for="rPrice">R석</label>
+                    <input type="number" id="rPrice" th:field="*{seats.r.price}" placeholder="가격">
+                    <input type="number" id="rTotalSeats" th:field="*{seats.r.total}" placeholder="좌석 수">
+                    
+                    <label for="sPrice">S석</label>
+                    <input type="number" id="sPrice" th:field="*{seats.s.price}" placeholder="가격">
+                    <input type="number" id="sTotalSeats" th:field="*{seats.s.total}" placeholder="좌석 수">
+
+                    <label for="aPrice">A석</label>
+                    <input type="number" id="aPrice" th:field="*{seats.a.price}" placeholder="가격">
+                    <input type="number" id="aTotalSeats" th:field="*{seats.a.total}" placeholder="좌석 수">
+                </div>
+                
+                <button type="submit" class="submit-btn">공연 등록하기</button>
+                
+            </div> </div> </form>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            
+            const posterFileInput = document.getElementById("posterFile"); // 파일 인풋
+            const posterPreviewImg = document.getElementById("poster-preview-img");
+            const defaultImageUrl = "https://via.placeholder.com/400x560.png?text=Poster+Preview";
+
+            // 'posterFile' 입력 필드에 'change' 이벤트 리스너 추가
+            posterFileInput.addEventListener("change", function() {
+                const file = posterFileInput.files[0]; // 선택된 파일
+                
+                if (file) {
+                    // 파일 읽기
+                    const reader = new FileReader();
+                    
+                    // 읽기가 완료되면
+                    reader.onload = function(e) {
+                        // e.target.result에 파일 데이터(Data URL)가 담겨있음
+                        posterPreviewImg.src = e.target.result;
+                    }
+                    
+                    // 파일을 Data URL로 읽기 시작
+                    reader.readAsDataURL(file);
+                } else {
+                    // 파일 선택이 취소되면 기본 이미지로
+                    posterPreviewImg.src = defaultImageUrl;
+                }
+            });
+
+            // 이미지 로드 실패 시 (FileReader에서는 거의 발생 안 함)
+            posterPreviewImg.onerror = function() {
+                posterPreviewImg.src = defaultImageUrl;
+            };
+        });
+    </script>
+
+</body>
+</html>

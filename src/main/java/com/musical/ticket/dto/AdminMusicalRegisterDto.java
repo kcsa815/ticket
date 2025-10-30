@@ -2,16 +2,17 @@ package com.musical.ticket.dto;
 
 import java.time.LocalDate;
 
-public class AdminShowRegisterDto {
+public class AdminMusicalRegisterDto {
     //기본 생성자 추가
-    public AdminShowRegisterDto(){
+    public AdminMusicalRegisterDto(){
     }
 
     // 1. DTO의 최상위 필드
     private String title;
     private String posterUrl;
-    private LocalDate startDate; // HTML <input type="date">의 'YYYY-MM-DD' 문자열이 LocalDate로 자동 변환됨
+    private LocalDate startDate;
     private LocalDate endDate;
+    private String venue;
     private String description;
     
     private SeatInfo seats;
@@ -25,6 +26,8 @@ public class AdminShowRegisterDto {
     public LocalDate getEndDate() { return endDate; }
     public void setEndDate(LocalDate endDate) { this.endDate = endDate; }
     public String getDescription() { return description; }
+    public String getVenue() { return venue; }
+    public void setVenue(String venue) { this.venue = venue; }
     public void setDescription(String description) { this.description = description; }
     public SeatInfo getSeats() { return seats; }
     public void setSeats(SeatInfo seats) { this.seats = seats; }

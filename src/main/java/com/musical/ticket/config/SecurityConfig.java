@@ -22,10 +22,9 @@ public class SecurityConfig {
         http
             // 1. 페이지 접근 권한 설정
             .authorizeHttpRequests(authz -> authz
-                // ▼▼▼ 모든 permitAll() 규칙을 하나로 통합 ▼▼▼
                 .requestMatchers(
                     "/", 
-                    "/login", 
+                    "/members/login", 
                     "/members/new",
                     // ▼ 헤더 메뉴 (공개)
                     "/musical-list", 
@@ -39,7 +38,9 @@ public class SecurityConfig {
                     "/images/**",
                     // ▼ 기타 (DB 콘솔, 임시 관리자 페이지)
                     "/h2-console/**",
-                    "/admin/**"
+                    "/admin/**",
+                    // 404에러 페이지도 허용.
+                    "/error"
                 ).permitAll()
                 
                 .requestMatchers("/my_reservation").authenticated() // 내 예약은 인증 필요
@@ -56,12 +57,12 @@ public class SecurityConfig {
 
             // 3. 로그인 설정
             .formLogin(form -> form
-                .loginPage("/login")
+                .loginPage("/members/login")
                 .loginProcessingUrl("/login")
                 .defaultSuccessUrl("/")
                 .usernameParameter("username")
                 .passwordParameter("password")
-                .failureUrl("/login?error=true")
+                .failureUrl("/members/login?error=true")
                 .permitAll()
             )
 

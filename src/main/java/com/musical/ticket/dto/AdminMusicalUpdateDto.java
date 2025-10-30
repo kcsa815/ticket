@@ -3,7 +3,7 @@ package com.musical.ticket.dto;
 import java.time.LocalDate;
 
 // (Getter, Setter가 모두 필요합니다)
-public class AdminShowUpdateDto {
+public class AdminMusicalUpdateDto {
 
     private Long id; // 💡 ID 필드 (필수)
     private String title;

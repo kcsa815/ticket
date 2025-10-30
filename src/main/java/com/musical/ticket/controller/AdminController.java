@@ -11,117 +11,104 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.musical.ticket.dto.AdminShowRegisterDto;
-import com.musical.ticket.dto.AdminShowUpdateDto;
-import com.musical.ticket.entity.Show;
-import com.musical.ticket.service.ShowService;
+import com.musical.ticket.dto.AdminMusicalRegisterDto;
+import com.musical.ticket.dto.AdminMusicalUpdateDto;
+import com.musical.ticket.entity.Musical;
+import com.musical.ticket.service.MusicalService;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
 
 @Controller
-@RequestMapping("/admin") // "/admin"으로 시작하는 모든 요청을 이 컨트롤러가 처리
+@RequestMapping("/admin")
 public class AdminController {
 
-    private final ShowService showService;
+    private final MusicalService musicalService;
 
-    public AdminController(ShowService showService) {
-        this.showService = showService;
+    public AdminController(MusicalService musicalService) {
+        this.musicalService = musicalService;
     }
 
     @GetMapping("/register")
-    public String registerForm() {
-        return "admin/admin_register_show";
+    public String registerForm(Model model) {
+        model.addAttribute("musicalDto", new AdminMusicalRegisterDto());
+        return "admin/admin_register_musical"; 
     }
 
     @GetMapping("/list")
-    public String showList(Model model) {
-        List<Show> shows = showService.findAllShows();
-        model.addAttribute("shows", shows);
-
-        return "admin/admin_show_list";
+    public String musicalList(Model model) {
+        List<Musical> musicals = musicalService.findAllMusicals();
+        model.addAttribute("musicals", musicals);
+        return "admin/admin_musical_list"; 
     }
 
-    // post 공연 등록
+    // 2. POST 요청: @RequestBody -> @ModelAttribute로 변경
     @PostMapping("/register")
-    @ResponseBody // 페이지가 html이 아닌 json을 반환한다는 의미.
-    public ResponseEntity<String> registerShow(
-            @RequestBody AdminShowRegisterDto showDto // @RequestBody : js가 보낸 json을 dto로 변환
+    public String registerMusical(
+            @RequestParam("posterFile") MultipartFile posterFile,
+            @ModelAttribute("musicalDto") AdminMusicalRegisterDto musicalDto
     ) {
         try {
-            showService.registerShow(showDto);
-            return ResponseEntity.ok("공연이 성공적으로 등록되었습니다.");
-
+            musicalService.registerMusical(musicalDto, posterFile);
+            return "redirect:/admin/list"; // 성공 시 관리자 목록 페이지로 리다이렉트
+            
         } catch (Exception e) {
             System.err.println("공연 등록 중 오류 발생:" + e.getMessage());
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR) // 500에러
-                    .body("공연 등록 중 오류가 발생했습니다 : " + e.getMessage());
+            e.printStackTrace(); // 
+            // 
+            // 
+            // --- 오류 로그를 자세히 보기 위해 e.printStackTrace() 추가
+            return "admin/admin_register_musical"; 
         }
     }
 
     // 공연 수정(get)
     @GetMapping("/edit/{id}")
     public String editForm(
-            @PathVariable("id") Long showId, // 💡 URL의 {id} 값을 가져옴
+            @PathVariable("id") Long musicalId,
             Model model) {
         try {
-            Show show = showService.findShowById(showId);
-            model.addAttribute("show", show);
-            return "admin/admin_edit_show";
-
+            Musical musical = musicalService.findMusicalById(musicalId);
+            model.addAttribute("musical", musical);
+            return "admin/admin_edit_musical";
         } catch (IllegalArgumentException e) {
-            System.err.println(e.getMessage());
             return "redirect:/admin/list";
         }
     }
+    
     // 공연 수정(post)
     @PostMapping("/edit/{id}")
-    public String updateShow(
-            @PathVariable("id") Long showId,
-            @ModelAttribute AdminShowUpdateDto updateDto // 💡 [4] Show -> AdminShowUpdateDto
+    public String updateMusical(
+            @PathVariable("id") Long musicalId,
+            @ModelAttribute AdminMusicalUpdateDto updateDto
     ) {
-        // (ID 검증)
-        if (!showId.equals(updateDto.getId())) {
+        if (!musicalId.equals(updateDto.getId())) {
             return "redirect:/admin/list";
         }
-
         try {
-            // (디버깅 로그)
-            System.out.println("===== 폼에서 받은 DTO 데이터 =====");
-            System.out.println(updateDto.toString()); // (DTO에 toString()을 만드셔도 좋습니다)
-            System.out.println("DTO Start Date (String): " + updateDto.getStartDate());
-            System.out.println("===============================");
-
-            // 💡 [5] DTO를 서비스로 전달
-            showService.updateShow(showId, updateDto); 
-            
+            musicalService.updateMusical(musicalId, updateDto);
             return "redirect:/admin/list";
-
-        } catch (DateTimeParseException e) {
-            // (날짜 변환 실패 시)
-            System.err.println("공연 수정 중 날짜 변환 오류: " + e.getMessage());
-            return "redirect:/admin/edit/" + showId;
         } catch (Exception e) {
-            System.err.println("공연 수정 중 오류 발생: " + e.getMessage());
-            return "redirect:/admin/edit/" + showId;
+            return "redirect:/admin/edit/" + musicalId;
         }
     }
 
     // 공연 삭제
     @DeleteMapping("/delete/{id}")
     @ResponseBody
-    public ResponseEntity<String> deleteShow(@PathVariable("id") Long showId) {
+    public ResponseEntity<String> deleteMusical(@PathVariable("id") Long musicalId) {
+
         try {
-            showService.deleteShow(showId);
+            musicalService.deleteMusical(musicalId); 
             return ResponseEntity.ok("공연이 성공적으로 삭제되었습니다.");
 
         } catch (Exception e) {
             System.err.println("공연 삭제 중 오류 발생:" + e.getMessage());
             return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR) // 500에러
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("공연 삭제 중 오류가 발생했습니다 : " + e.getMessage());
         }
     }
-
 }

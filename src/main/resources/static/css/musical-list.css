@@ -3,7 +3,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: #63576c;
 }
 
 /* 페이지 중앙 정렬 컨테이너 */
@@ -48,7 +48,7 @@ h1 {
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     overflow: hidden; /* 이미지가 모서리를 둥글게 하도록 */
-    text-align: center;
+    text-align: left;
     transition: transform 0.2s; /* 마우스 오버 시 부드러운 효과 */
 }
 
