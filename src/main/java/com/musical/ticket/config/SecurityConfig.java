@@ -58,7 +58,7 @@ public class SecurityConfig {
             // 3. 로그인 설정
             .formLogin(form -> form
                 .loginPage("/members/login")
-                .loginProcessingUrl("/login")
+                .loginProcessingUrl("/members/login")
                 .defaultSuccessUrl("/")
                 .usernameParameter("username")
                 .passwordParameter("password")

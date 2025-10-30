@@ -5,11 +5,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import com.musical.ticket.dto.MemberFormDto;
 import com.musical.ticket.repository.MemberRepository;
 import com.musical.ticket.service.MemberService;
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;

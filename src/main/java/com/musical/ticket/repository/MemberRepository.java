@@ -2,7 +2,6 @@ package com.musical.ticket.repository;
 
 import com.musical.ticket.domain.Member;
 import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 
 //DB CRUD담당 파일

@@ -47,11 +47,6 @@ public class MemberService implements UserDetailsService{
     }
 
     //2. UserDetailsService의 핵심 메서드 구현
-    /*
-    *Spring Security 가 username을 기반으로 사용자의 정볼보를 DB에서 조회
-    *@param username(로그인 시 입력한 아이디)
-    *@return UserDetails (Spring Sequrity가 사용하는 사용자 정보 객체)
-     */
     @Override
     @Transactional(readOnly = true) //읽기 전용 트랜잭션
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
