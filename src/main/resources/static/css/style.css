@@ -59,6 +59,9 @@ a {
 .swiper-slide.slide-3 {
     background: url('/images/banner-3.jpg') no-repeat center center/cover;
 }
+.swiper-slide.slide-4 {
+    background: url('/images/banner-4.jpg') no-repeat center center/cover;
+}
 
 .swiper-slide h1 {
     font-size: 40px;
