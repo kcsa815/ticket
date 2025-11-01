@@ -38,7 +38,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	// Validation(유효성 검사 ex)"아이디는 비워둘 수 없음")
+	// Validation(유효성 검사 ex)"아이디는 비워둘 수 없음" / dto에서 사용)
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 }
 

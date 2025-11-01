@@ -1,6 +1,6 @@
 package com.musical.ticket.domain.entity;
 
-import com.musical.ticket.dto.AdminMusicalRegisterDto.SeatGrade;
+import com.musical.ticket.domain.enums.SeatGrade;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

@@ -13,6 +13,7 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -46,6 +47,7 @@ public class Musical {
     @OneToMany(mappedBy = "musical", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Performance> performances = new ArrayList<>();
 
+    @Builder
     public Musical(String title, String description, String posterImageUrl, Integer runningTime, String ageRating) {
         this.title = title;
         this.description = description;
