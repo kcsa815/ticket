@@ -1,8 +1,13 @@
 package com.musical.ticket.domain.entity;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import com.musical.ticket.domain.enums.UserRole;
+import java.util.Collections;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,7 +27,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED) //jpa기본생성자 필요.(보안상 protected)
 @Table(name = "user")
-public class User extends BaseTimeEntity {
+public class User extends BaseTimeEntity implements UserDetails{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,5 +56,43 @@ public class User extends BaseTimeEntity {
         this.password = password;
         this.username = username;
         this.role = role;
+    }
+
+    // --- UserDetails 인터페이스 메서드 구현 ---
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // 권한 반환 (여기서는 단일 권한)
+        return Collections.singletonList(new SimpleGrantedAuthority(this.role.name()));
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email; // Spring Security에서 'username'은 고유 식별자임 (우리는 email 사용)
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true; // 계정 만료 여부 (true: 만료 안 됨)
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true; // 계정 잠금 여부 (true: 잠기지 않음)
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true; // 비밀번호 만료 여부 (true: 만료 안 됨)
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true; // 계정 활성화 여부 (true: 활성화됨)
     }
 }

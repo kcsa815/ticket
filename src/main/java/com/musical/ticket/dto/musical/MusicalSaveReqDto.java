@@ -1,6 +1,5 @@
 package com.musical.ticket.dto.musical;
 //뮤지컬 등록, 수정 요청 dto
-
 import com.musical.ticket.domain.entity.Musical;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

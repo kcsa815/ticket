@@ -1,6 +1,6 @@
 package com.musical.ticket.dto.user;
-//회원가입 요청 dto
 
+//회원가입 요청 dto
 import com.musical.ticket.domain.entity.User;
 import com.musical.ticket.domain.enums.UserRole;
 import jakarta.validation.constraints.Email;
