@@ -1,10 +1,11 @@
 package com.musical.ticket.dto.musical;
+import org.springframework.web.multipart.MultipartFile;
+
 //뮤지컬 등록, 수정 요청 dto
 import com.musical.ticket.domain.entity.Musical;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,7 +20,7 @@ public class MusicalSaveReqDto {
 
     private String description;
     
-    private String posterImageUrl;
+    private MultipartFile posterImageUrl;
 
     @NotNull
     @Min(value = 1, message = "상영 시간은 1분 이상이어야 합니다.")
@@ -27,20 +28,11 @@ public class MusicalSaveReqDto {
 
     private String ageRating;
 
-    @Builder
-    public MusicalSaveReqDto(String title, String description, String posterImageUrl, Integer runningTime, String ageRating) {
-        this.title = title;
-        this.description = description;
-        this.posterImageUrl = posterImageUrl;
-        this.runningTime = runningTime;
-        this.ageRating = ageRating;
-    }
-
-    public Musical toEntity() {
+    public Musical toEntity(String posterImageUrl) {
         return Musical.builder()
                 .title(this.title)
                 .description(this.description)
-                .posterImageUrl(this.posterImageUrl)
+                .posterImageUrl(posterImageUrl) //service에서 저장한 url
                 .runningTime(this.runningTime)
                 .ageRating(this.ageRating)
                 .build();

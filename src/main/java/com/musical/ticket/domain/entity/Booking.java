@@ -38,8 +38,9 @@ public class Booking extends BaseTimeEntity {
     @Column(name = "total_price", nullable = false)
     private Integer totalPrice;
 
-    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<BookingSeat> bookingSeats = new ArrayList<>();
+    //예약(1) : 공연좌석(N)
+    @OneToMany(mappedBy = "booking")
+    private List<PerformanceSeat> performanceSeats = new ArrayList<>();
 
     @Builder
     public Booking(User user, Performance performance, BookingStatus bookingStatus, Integer totalPrice) {
@@ -53,8 +54,8 @@ public class Booking extends BaseTimeEntity {
     public void cancelBooking() {
         this.bookingStatus = BookingStatus.CANCELED;
 
-        for (BookingSeat bookingSeat : this.bookingSeats) {
-            ((Seat) bookingSeat.getSeat()).cancel();
+        for (PerformanceSeat performanceSeat : this.performanceSeats) {
+            performanceSeat.cancelBooking();
         }
     }
     

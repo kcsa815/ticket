@@ -11,6 +11,10 @@ import com.musical.ticket.dto.user.UserLoginReqDto;
 import com.musical.ticket.dto.user.UserResDto;
 import com.musical.ticket.dto.user.UserSignUpReqDto;
 import com.musical.ticket.service.UserService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.ResponseExtractor;
+
 @RestController // "이 클래스는 HTTP 응답(JSON)을 반환하는 Controller입니다"
 @RequestMapping("/api/users") // 이 컨트롤러의 모든 메서드는 /api/users 경로로 시작
 @RequiredArgsConstructor
@@ -33,28 +37,29 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
-    /**
-     * 로그인 (R)
-     * [POST] /api/users/login
-     * JWT 토큰을 발급하여 반환
-     */
+   //로그인(R)
     @PostMapping("/login")
     public ResponseEntity<TokenDto> login(@Valid @RequestBody UserLoginReqDto userLoginReqDto) {
         TokenDto tokenDto = userService.login(userLoginReqDto);
         return ResponseEntity.ok(tokenDto);
     }
 
-    /**
-     * 내 정보 조회 (R)
-     * [GET] /api/users/{userId}
-     * (5단계 이후에는 토큰으로 '나'를 식별하므로 {userId}가 필요 없어질 수 있음)
-     */
+    // 내 정보 조회 (R)
     @GetMapping("/{userId}")
     public ResponseEntity<UserResDto> getUserInfo(@PathVariable Long userId) {
         // @PathVariable: URL 경로의 {userId} 값을 Long userId 변수에 바인딩
 
-        UserResDto responseDto = userService.getUserInfo(userId);
+        UserResDto responseDto = userService.getUserInfoById(userId);
         
         return ResponseEntity.ok(responseDto);
     }
+
+    //내 정보 조회(토큰 기반)
+    @GetMapping("/me")
+    public ResponseEntity<UserResDto> getMyInfo(){
+        //SecurityConfig에서 /api/users/me 경로는 인증이 필요하도록 설정 돼 있어야 함
+        UserResDto responseDto = userService.getMyInfo();
+        return ResponseEntity.ok(responseDto);
+    }
+    
 }

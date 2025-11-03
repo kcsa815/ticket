@@ -1,5 +1,8 @@
 package com.musical.ticket.domain.entity;
+import java.util.ArrayList;
+import java.util.List;
 
+//좌석 탬플릿 역할을 하는 엔티티
 import com.musical.ticket.domain.enums.SeatGrade;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -10,10 +13,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "seat", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"performance_id", "seat_number"}) //복합 유니크 키
-})
-public class Seat extends BaseTimeEntity {
+@Table(name = "seat")
+public class Seat {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +25,11 @@ public class Seat extends BaseTimeEntity {
     @JoinColumn(name = "performance_id", nullable = false)
     private Performance performance;
 
+    //좌석(N) : 공연장(1)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "venue_id", nullable = false)
+    private Venue venue;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "seat_grade", nullable = false)
     private SeatGrade seatGrade;
@@ -31,27 +37,14 @@ public class Seat extends BaseTimeEntity {
     @Column(name = "seat_number", nullable = false)
     private String seatNumber;
 
-    @Column(nullable = false)
-    private Integer price;
-
-    @Column(name = "is_reserved", nullable = false)
-    private Boolean isReserved = false; //기본값 false
+    //좌석(1) : 공연좌석(N)
+    @OneToMany(mappedBy = "seat")
+    private List<PerformanceSeat> performanceSeats = new ArrayList<>();
 
     @Builder
     public Seat(Performance performance, SeatGrade seatGrade, String seatNumber, Integer price) {
-        this.performance = performance;
+        this.venue = venue;
         this.seatGrade = seatGrade;
         this.seatNumber = seatNumber;
-        this.price = price;
-        this.isReserved = (isReserved != null) ? isReserved : false;
-    }
-
-    //좌석 예약 상태 변경 메서드
-    public void reserve() {
-        this.isReserved = true;
-    }
-    //좌석 예약 취소 메서드
-    public void cancel() {
-        this.isReserved = false;
     }
 }

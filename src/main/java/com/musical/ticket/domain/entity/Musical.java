@@ -55,4 +55,14 @@ public class Musical {
         this.runningTime = runningTime;
         this.ageRating = ageRating;
     }
+
+    // 뮤지컬 정보 수정 메서드
+    public void update(String title, String description, String posterImageUrl, Integer runningTime, String ageRating) {
+        this.title = title;
+        this.description = description;
+        this.posterImageUrl = posterImageUrl;
+        this.runningTime = runningTime;
+        this.ageRating = ageRating;
+    }
+
 }

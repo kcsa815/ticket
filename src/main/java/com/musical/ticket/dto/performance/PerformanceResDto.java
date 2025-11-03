@@ -17,6 +17,6 @@ public class PerformanceResDto {
         this.musicalId = performance.getMusical().getId();
         this.musicalTitle = performance.getMusical().getTitle(); // Lazy 로딩 주의
         this.performanceDate = performance.getPerformanceDate();
-        this.venue = performance.getVenue();
+        this.venue = performance.getVenue().getName();
     }
 }

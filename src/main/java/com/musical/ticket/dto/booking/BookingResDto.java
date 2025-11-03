@@ -29,9 +29,9 @@ public class BookingResDto {
         this.totalPrice = booking.getTotalPrice();
         this.bookingDate = booking.getCreatedAt();
         
-        // BookingSeat 엔티티 리스트에서 Seat 엔티티 리스트를 추출한 후, SeatResDto 리스트로 변환
-        this.seats = booking.getBookingSeats().stream()
-                .map(bookingSeat -> new SeatResDto(bookingSeat.getSeat()))
+        // PerformanceSeat 엔티티 리스트에서 SeatResDto 리스트로 변환
+        this.seats = booking.getPerformanceSeats().stream()
+                .map(performanceSeat -> new SeatResDto(performanceSeat))
                 .collect(Collectors.toList());
     }
 }
