@@ -7,4 +7,6 @@
 10/28 4일차(관리자페이지 - CRUD 구현)<br>
 
 ---
-10/31 7일차(다시 시작..DB짜기-테이블 생성, Entity, enum파일 작성
+10/31 7일차(다시 시작..DB짜기-테이블 생성, Entity, enum파일 작성<br>
+11/1 Dto 작성<br>
+11/2 Repository -> Service -> Controller / Sequrity / handler<br>
