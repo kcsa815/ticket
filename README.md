@@ -10,3 +10,5 @@
 10/31 7일차(다시 시작..DB짜기-테이블 생성, Entity, enum파일 작성<br>
 11/1 Dto 작성<br>
 11/2 Repository -> Service -> Controller / Sequrity / handler<br>
+11/3 Musical API 작성 완료<br>
+11/4 Venue API작성 완료<br>
