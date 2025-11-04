@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class MusicalService {
     
-    private final MusicalRepository MusicalRepository;
+    private final MusicalRepository musicalRepository;
     private final FileUtil fileUtil; //파일 저장을 위해 주입
 
     //(Admin) 뮤지컬 등록(C)
@@ -29,7 +29,7 @@ public class MusicalService {
         //2. dto ->entity 변환(저장된 url포함)
         Musical musical = reqDto.toEntity(posterImageUrl);
         //3. db에 저장
-        Musical savedMusical = MusicalRepository.save(musical);
+        Musical savedMusical = musicalRepository.save(musical);
 
         return new MusicalResDto(savedMusical);
     }
@@ -38,7 +38,7 @@ public class MusicalService {
     @Transactional
     public MusicalResDto updateMusical(Long musicalId, MusicalSaveReqDto reqDto){
         //1. 대상 조회
-        Musical musical = MusicalRepository.findById(musicalId).orElseThrow(()->new CustomException(ErrorCode.MUSICAL_NOT_FOUND));
+        Musical musical = musicalRepository.findById(musicalId).orElseThrow(()->new CustomException(ErrorCode.MUSICAL_NOT_FOUND));
         //2. 새 이미지 파일이 있는지 확인
         String newImageUrl = null;
         if(reqDto.getPosterImageUrl() !=null && !reqDto.getPosterImageUrl().isEmpty()){
@@ -63,16 +63,16 @@ public class MusicalService {
     @Transactional
     public void deleteMusical(Long musicalId){
         //1. 대상 조회;
-        Musical musical = MusicalRepository.findById(musicalId).orElseThrow(()->new CustomException(ErrorCode.MUSICAL_NOT_FOUND));
+        Musical musical = musicalRepository.findById(musicalId).orElseThrow(()->new CustomException(ErrorCode.MUSICAL_NOT_FOUND));
         //2. 저장된 이미지 파일 삭제
         fileUtil.deleteFile(musical.getPosterImageUrl());
         //3. DB에서 삭제
-        MusicalRepository.delete(musical);
+        musicalRepository.delete(musical);
     }
 
     //(User/All) 뮤지컬 전체 조회(R)
     public List<MusicalResDto> getAllMusicals(){
-        List<Musical> musicals = MusicalRepository.findAll();
+        List<Musical> musicals = musicalRepository.findAll();
         return musicals.stream()
             .map(MusicalResDto::new)
             .collect(Collectors.toList());
@@ -80,7 +80,7 @@ public class MusicalService {
 
     //(User/All) 뮤지컬 상세 조회(R)
     public MusicalResDto getMusicalById(Long musicalId){
-        Musical musical =  MusicalRepository.findById(musicalId)
+        Musical musical =  musicalRepository.findById(musicalId)
             .orElseThrow(()->new CustomException(ErrorCode.MUSICAL_NOT_FOUND));
         return new MusicalResDto(musical);
     }

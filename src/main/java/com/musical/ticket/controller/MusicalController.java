@@ -58,8 +58,8 @@ public class MusicalController {
         @PathVariable Long musicalId,
         @Valid @ModelAttribute MusicalSaveReqDto reqDto
     ){
-        MusicalResDto responResDto = musicalService.updateMusical(musicalId, reqDto);
-        return ResponseEntity.ok(responResDto);
+        MusicalResDto respondResDto = musicalService.updateMusical(musicalId, reqDto);
+        return ResponseEntity.ok(respondResDto);
     }
     
     //(Admin)뮤지컬 삭제(D)

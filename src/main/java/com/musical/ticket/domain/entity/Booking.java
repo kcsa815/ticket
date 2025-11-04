@@ -31,8 +31,8 @@ public class Booking extends BaseTimeEntity {
     @JoinColumn(name = "performance_id", nullable = false)
     private Performance performance;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "booking_seat_id", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "booking_status", nullable = false)
     private BookingStatus bookingStatus;
 
     @Column(name = "total_price", nullable = false)

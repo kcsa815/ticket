@@ -30,7 +30,7 @@ public class Performance extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY) //지연 로딩(성능 최적화)
-    @Column(name = "musical_id", nullable = false)
+    @JoinColumn(name = "musical_id", nullable = false)
     private Musical musical;
 
     //공연좌석(N) : 공연장(1)

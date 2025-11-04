@@ -21,10 +21,6 @@ public class Seat {
     @Column(name = "seat_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "performance_id", nullable = false)
-    private Performance performance;
-
     //좌석(N) : 공연장(1)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "venue_id", nullable = false)
@@ -42,7 +38,7 @@ public class Seat {
     private List<PerformanceSeat> performanceSeats = new ArrayList<>();
 
     @Builder
-    public Seat(Performance performance, SeatGrade seatGrade, String seatNumber, Integer price) {
+    public Seat(Venue venue, SeatGrade seatGrade, String seatNumber, Integer price) {
         this.venue = venue;
         this.seatGrade = seatGrade;
         this.seatNumber = seatNumber;

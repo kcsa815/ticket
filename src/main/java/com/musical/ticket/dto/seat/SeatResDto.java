@@ -9,30 +9,27 @@ import lombok.Getter;
 @Getter
 public class SeatResDto {
     private Long seatId;
-    private Long performanceId;
+    private Long venueId;
     private SeatGrade seatGrade;
     private String seatNumber;
     private Integer price;
-    private Boolean isReserved;
 
-    // PerformanceSeat을 받는 생성자 (price, isReserved 정보 포함)
+    // VenueSaveReqDto를 받는 생성자 (price, isReserved 정보 포함)
     public SeatResDto(PerformanceSeat performanceSeat) {
         Seat seat = performanceSeat.getSeat();
         this.seatId = seat.getId();
-        this.performanceId = performanceSeat.getPerformance().getId();
+        this.venueId = seat.getVenue().getId();
         this.seatGrade = seat.getSeatGrade();
         this.seatNumber = seat.getSeatNumber();
         this.price = performanceSeat.getPrice();
-        this.isReserved = performanceSeat.getIsReserved();
     }
 
     // Seat만 받는 생성자 (price, isReserved는 null로 설정)
     public SeatResDto(Seat seat) {
         this.seatId = seat.getId();
-        this.performanceId = seat.getPerformance().getId();
+        this.venueId = seat.getVenue().getId();
         this.seatGrade = seat.getSeatGrade();
         this.seatNumber = seat.getSeatNumber();
         this.price = null;
-        this.isReserved = null;
     }
 }
