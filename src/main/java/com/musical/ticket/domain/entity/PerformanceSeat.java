@@ -1,6 +1,12 @@
 package com.musical.ticket.domain.entity;
 import jakarta.persistence.Column;
 //특정 공연 회차의 좌석 상태(가격, 예약 여부)를 관리함
+/**
+ * setBooking(Booking booking)메서드 수정 필요
+ * <양방향 연관관계 편의 메서드>
+ *  이 메서드가 PerformanceSeat의 booking필드(FK)를 설정할 때,
+ *  반대편인 Booking 엔티티의 performanceSeats리스트에도 this(자기자신)을 추가해 줘야 함.
+ */
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -59,9 +65,19 @@ public class PerformanceSeat extends BaseTimeEntity{
     public void setBooking(Booking booking){
         this.booking = booking;
         this.isReserved = true;
+        /* 중요!!
+            양방향 연관관계 설정 : Booking엔티티 리스트에도 자기 자신을 추가해야됨!
+            이렇게 해야 Service에서 new BookingResDto(savedBooking)시 savedBooking객체가 예매된 좌석목록 알 수 있음.
+        */
+        booking.getPerformanceSeats().add(this);
     }
+
     //예매 취소 매서드
     public void cancelBooking(){
+        //양방향 연관관계 제거!!
+        if(this.booking !=null){
+            this.booking.getPerformanceSeats().remove(this);
+        }
         this.booking = null;
         this.isReserved = false;
     }
