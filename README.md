@@ -15,3 +15,4 @@
 11/5 Performance API 작성 완료  --> 공연과 공연장(좌석)을 연결하는 공연 상세<br>
   Booking API 작성 완료 <br>
   Booking Canel API 작성 완료 <br>
+11/6 백엔드 테스팅 -포스트맨
