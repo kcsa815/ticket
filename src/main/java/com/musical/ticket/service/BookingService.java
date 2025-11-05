@@ -128,5 +128,43 @@ public class BookingService {
             .map(BookingResDto::new)
             .collect(Collectors.toList());
     }
+
+    /*
+     * (User) 예매 취소(UPDATE / DELETE)
+     * @param bookingId(취소할 예매 ID)
+     */
+    @Transactional
+    public void cancelBooking(Long bookingId){
+        //1. 현재 로그인한 User엔티티 조회
+        String userEmail = SecurityUtil.getCurrentUserEmail();
+        User user = userRepository.findByEmail(userEmail)
+            .orElseThrow(()->new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        //2. 예매 내역(Booking)을 비관적락으로 조회
+        Booking booking = bookingRepository.findByIdWithPessimisticLock(bookingId)
+            .orElseThrow(() -> new CustomException(ErrorCode.BOOKING_NOT_FOUND));
+
+        /*--------3. 검증(Validation)----------*/
+
+        //3-1.(보안) 이 예매가 현재 로그인한 사용자의 예매가 맞는지 확인
+        if (!booking.getUser().getId().equals(user.getId())){
+            log.warn("사용자(ID: {})가 타인의 예매(Booking_ID: {})취소를 시도했습니다", user.getId(), bookingId);
+            throw new CustomException(ErrorCode.ACCESS_DENIED);
+        }
+
+        //3-2. (비지니스) 이미 취소된 예매인지 확인
+        if(booking.getBookingStatus() == BookingStatus.CANCELED){
+            log.warn("이미 취소된 예매(Booking_ID: {})입니다.", booking.getId());
+            throw new CustomException(ErrorCode.INVALID_INPUT_VALUE);
+        }
+
+        /*------4. 취소 로직 실행--------- */
+
+        //4-1. 엔티티의 캡슐화된 메서드 호출
+        booking.cancelBooking();
+        log.info("예매 취소 성공(Booking_ID: {})", bookingId);
+
+        
+    }
     
 }

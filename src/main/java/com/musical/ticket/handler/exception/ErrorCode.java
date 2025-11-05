@@ -26,6 +26,7 @@ public enum ErrorCode {
     MUSICAL_NOT_FOUND(HttpStatus.NOT_FOUND, "MUSICAL-001", "존재하지 않는 뮤지컬입니다."),
     PERFORMANCE_NOT_FOUND(HttpStatus.NOT_FOUND, "PERF-001", "존재하지 않는 공연 회차입니다."),
     VENUE_NOT_FOUND(HttpStatus.NOT_FOUND, "VENUE-001", "존재하지 않는 공연장입니다."),
+    BOOKING_NOT_FOUND(HttpStatus.NOT_FOUND, "BOOKING-001", "존재하지 않는 예매입니다."),
     
     // --- 예매/좌석 ---
     SEAT_NOT_FOUND(HttpStatus.NOT_FOUND, "SEAT-001", "존재하지 않는 좌석입니다."),

@@ -76,8 +76,10 @@ public class PerformanceSeat extends BaseTimeEntity{
     public void cancelBooking(){
         //양방향 연관관계 제거!!
         if(this.booking !=null){
+            //1. Booking엔티티의 리스트에서 *나*를 제거
             this.booking.getPerformanceSeats().remove(this);
         }
+        //2. 나의 상태를 *예약 가능*으로 변경
         this.booking = null;
         this.isReserved = false;
     }

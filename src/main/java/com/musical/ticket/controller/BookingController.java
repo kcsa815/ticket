@@ -15,7 +15,9 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,5 +59,19 @@ public class BookingController {
 
         List<BookingResDto> responseDtos = bookingService.getMyBookings();
         return ResponseEntity.ok(responseDtos);
+    }
+
+    /*
+     * (User) 예매 취소(D)
+     * [DELETE] /api/bookings/{bookingId}
+     */
+    @DeleteMapping("/{bookingId}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<Void> cancelBooking(@PathVariable Long bookingId){
+
+        bookingService.cancelBooking(bookingId);
+
+        //성공시 204 No Content반환
+        return ResponseEntity.noContent().build();
     }
 }

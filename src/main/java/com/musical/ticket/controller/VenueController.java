@@ -26,7 +26,6 @@ import com.musical.ticket.dto.venue.VenueSaveReqDto;
 import com.musical.ticket.service.VenueService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController

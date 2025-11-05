@@ -12,8 +12,6 @@ import com.musical.ticket.dto.user.UserResDto;
 import com.musical.ticket.dto.user.UserSignUpReqDto;
 import com.musical.ticket.service.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.ResponseExtractor;
 
 @RestController // "이 클래스는 HTTP 응답(JSON)을 반환하는 Controller입니다"
 @RequestMapping("/api/users") // 이 컨트롤러의 모든 메서드는 /api/users 경로로 시작

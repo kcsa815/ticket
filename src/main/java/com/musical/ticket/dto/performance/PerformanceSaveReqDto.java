@@ -1,5 +1,4 @@
 package com.musical.ticket.dto.performance;
-import jakarta.persistence.criteria.CriteriaBuilder.In;
 // 관리자가 공연 회차 등록, 수정 요청 시 보낼 dto
 // musicalId, venueId, performanceDate(어떤 공연을, 어떤 공연장에서, 어느 날짜에)
 // Map<SeatGrade, Integer>(좌석등급별가격) 정보를 받음(예 : {"VIP" : 170000, "R" : 140000})

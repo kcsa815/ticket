@@ -50,11 +50,13 @@ public class Booking extends BaseTimeEntity {
         this.totalPrice = totalPrice;
     }
 
-    //예매 취소 매서드
+    //예매 취소 로직 (연관된 좌석 모두 취소)
     public void cancelBooking() {
+        //1. 예매 상태 변경
         this.bookingStatus = BookingStatus.CANCELED;
 
-        for (PerformanceSeat performanceSeat : this.performanceSeats) {
+        //2. 이 예매에 연결된 모든 좌석들의 상태를 *예약취소*로 변경
+        for (PerformanceSeat performanceSeat : new ArrayList<>(this.performanceSeats)) {
             performanceSeat.cancelBooking();
         }
     }

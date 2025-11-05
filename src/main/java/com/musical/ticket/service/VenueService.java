@@ -20,7 +20,6 @@ import com.musical.ticket.handler.exception.CustomException;
 import com.musical.ticket.handler.exception.ErrorCode;
 import com.musical.ticket.repository.SeatRepository;
 import com.musical.ticket.repository.VenueRepository;
-
 import lombok.RequiredArgsConstructor;
 
 @Service

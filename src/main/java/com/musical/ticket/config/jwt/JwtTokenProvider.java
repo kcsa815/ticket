@@ -2,7 +2,6 @@ package com.musical.ticket.config.jwt;
 //토큰 관련 모든 작업을 처리하는 핵심 클래스
 
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import com.musical.ticket.dto.security.TokenDto;
 import com.musical.ticket.handler.exception.ErrorCode;
-
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
@@ -37,7 +36,7 @@ public class JwtTokenProvider {
             @Value("${jwt.access-token-expiration-ms}") long accessTokenExpirationTime,
             @Value("${jwt.refresh-token-expiration-ms}") long refreshTokenExpirationTime) {
         
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8); 
         this.key = Keys.hmacShaKeyFor(keyBytes);
         this.accessTokenExpirationTime = accessTokenExpirationTime;
         this.refreshTokenExpirationTime = refreshTokenExpirationTime;
