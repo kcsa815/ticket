@@ -13,3 +13,4 @@
 11/3 Musical API 작성 완료  --->  공연 등록 가<br> 
 11/4 Venue API작성 완료 --> 공연장 생성 가능 <br>
 11/5 Performance API 작성 완료  --> 공연과 공연장(좌석)을 연결하는 공연 상세<br>
+  Booking API 작성 완료 <br>
