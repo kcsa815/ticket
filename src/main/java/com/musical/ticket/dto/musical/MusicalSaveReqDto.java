@@ -20,7 +20,7 @@ public class MusicalSaveReqDto {
 
     private String description;
     
-    private MultipartFile posterImageUrl;
+    private MultipartFile posterImage;
 
     @NotNull
     @Min(value = 1, message = "상영 시간은 1분 이상이어야 합니다.")

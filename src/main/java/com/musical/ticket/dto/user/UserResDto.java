@@ -16,7 +16,7 @@ public class UserResDto {
     public UserResDto(User user) {
         this.userId = user.getId();
         this.email = user.getEmail();
-        this.username = user.getUsername();
+        this.username = user.getRealUsername();
         this.role = user.getRole();
     }
 }

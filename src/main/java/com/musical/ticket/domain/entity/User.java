@@ -41,7 +41,7 @@ public class User extends BaseTimeEntity implements UserDetails{
     private String password;
 
     @Column(nullable = false)
-    private String username;
+    private String username;   // "이름" (예 : 홍길동)
 
     @Enumerated(EnumType.STRING) //Enum타입을 위해 DB에 문자열(USER, ADMIN)로 저장
     @Column(nullable = false)
@@ -69,6 +69,10 @@ public class User extends BaseTimeEntity implements UserDetails{
     @Override
     public String getUsername() {
         return this.email; // Spring Security에서 'username'은 고유 식별자임 (우리는 email 사용)
+    }
+
+    public String getRealUsername(){
+        return this.username;
     }
 
     @Override

@@ -25,7 +25,7 @@ public class MusicalService {
     @Transactional
     public MusicalResDto saveMusical(MusicalSaveReqDto reqDto){
         //1. 파일 저장(FileUtil사용, 파일이 없으면 null저장됨)
-        String posterImageUrl = fileUtil.saveFile(reqDto.getPosterImageUrl());
+        String posterImageUrl = fileUtil.saveFile(reqDto.getPosterImage());
         //2. dto ->entity 변환(저장된 url포함)
         Musical musical = reqDto.toEntity(posterImageUrl);
         //3. db에 저장
@@ -41,9 +41,9 @@ public class MusicalService {
         Musical musical = musicalRepository.findById(musicalId).orElseThrow(()->new CustomException(ErrorCode.MUSICAL_NOT_FOUND));
         //2. 새 이미지 파일이 있는지 확인
         String newImageUrl = null;
-        if(reqDto.getPosterImageUrl() !=null && !reqDto.getPosterImageUrl().isEmpty()){
+        if(reqDto.getPosterImage() !=null && !reqDto.getPosterImage().isEmpty()){
             //2-1. 새 이미지 저장;
-            newImageUrl = fileUtil.saveFile(reqDto.getPosterImageUrl());
+            newImageUrl = fileUtil.saveFile(reqDto.getPosterImage());
             //2-2. 기존 이미지 삭제
             fileUtil.deleteFile(musical.getPosterImageUrl());
         }    

@@ -4,6 +4,7 @@ package com.musical.ticket.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -54,13 +55,17 @@ public class SecurityConfig {
 
                 // 3. URL별 권한 설정 (인가)
                 .authorizeHttpRequests(authz -> authz
+                        //'OPTIONS' 메서드 요청은 인증/인가 없이 모두 허용(React 설정할 때 추가함)
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         // 아래 경로들은 인증 없이 접근 허용 (permitAll)
                         .requestMatchers(
                                 "/api/users/signup", // 회원가입
-                                "/api/users/login", // 로그인
-                                "/api/musicals/**", // 공연 정보 조회 (예시)
+                                "/api/users/login",         // 로그인
+                                "/api/musicals/**",         // 공연 정보 조회 (예시)
+                                "/api/venues/**",           //공연장 조회
+                                "/api/performances/**",     //공연 회차, 좌석조회
+                                "/images/**",               //이미지 파일 조회
                                 "/"
-                        // TODO: 프론트엔드 관련 정적 리소스(html, css, js) 경로 추가
                         ).permitAll()
 
                         // 관리자(ADMIN) 권한이 필요한 경로 (예시)
@@ -77,13 +82,13 @@ public class SecurityConfig {
                         .anyRequest().authenticated())
 
                 // 4. JWT 인증 필터 추가
-                // 우리가 만든 JwtAuthenticationFilter를
+                // 만들었던 JwtAuthenticationFilter를
                 // UsernamePasswordAuthenticationFilter (기본 로그인 필터) 보다 앞에 배치
                 .addFilterBefore(
                         new JwtAuthenticationFilter(jwtTokenProvider),
                         UsernamePasswordAuthenticationFilter.class)
 
-                // 5. 6단계: 예외 핸들링 추가
+                // 5. 예외 핸들링 추가
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint(customAuthenticationEntryPoint) // 401 처리
                         .accessDeniedHandler(customAccessDeniedHandler)         // 403 처리
