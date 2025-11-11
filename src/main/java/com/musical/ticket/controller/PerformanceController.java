@@ -39,10 +39,10 @@ public class PerformanceController {
 
     //(All) 특정 뮤지컬의 모든 공연 회차 목록 조회 (R)
     //[GET] /api/performances/musical/{musicalId}
-    @GetMapping("/api/performances/musical/{musicalId}")
-    public ResponseEntity<List<PerformanceSimpleResDto>> getPerformancesByMusical(@PathVariable Long musicalId){
-        List<PerformanceSimpleResDto> responsesDtos = performanceService.getPerformanceByMusical(musicalId);
-        return ResponseEntity.ok(responsesDtos);
+    @GetMapping("/musical/{musicalId}") 
+    public ResponseEntity<List<PerformanceSimpleResDto>> getPerformancesByMusical(@PathVariable Long musicalId) {
+        List<PerformanceSimpleResDto> responseDtos = performanceService.getPerformancesByMusical(musicalId);
+        return ResponseEntity.ok(responseDtos);
     }
 
     //(All) 공연 회차 상세 조회(좌석 맵 포함)(R)

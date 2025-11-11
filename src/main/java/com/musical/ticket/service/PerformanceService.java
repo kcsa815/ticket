@@ -19,13 +19,10 @@ package com.musical.ticket.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-
 import com.musical.ticket.domain.entity.Musical;
 import com.musical.ticket.domain.entity.Performance;
 import com.musical.ticket.domain.entity.PerformanceSeat;
@@ -117,27 +114,25 @@ public class PerformanceService {
 
     //(All) 공연 회차 상세 조회(R)
     //공연정보 + 전체 좌석 맵(PerformanceSeat)포함
-    public PerformanceResDto getPerformanceDetails(Long performanceId){
-        Performance performance = performanceRepository.findById(performanceId)
-            .orElseThrow(()->new CustomException(ErrorCode.PERFORMANCE_NOT_FOUND));
-
+    public PerformanceResDto getPerformanceDetails(Long performanceId) {
+        // [수정!] .findById() -> .findByIdWithFetch()
+        Performance performance = performanceRepository.findByIdWithFetch(performanceId)
+                .orElseThrow(() -> new CustomException(ErrorCode.PERFORMANCE_NOT_FOUND)); 
+        
         return new PerformanceResDto(performance);
     }
 
     //(All) 특정 뮤지컬의 모든 공연 회차 목록 조회(R)
     //좌석 맵 제외, 간략한 정보만
-    public List<PerformanceSimpleResDto> getPerformanceByMusical(Long musicalId){
-        //뮤지컬이 존재하는지 먼저 확인
-        if (!musicalRepository.existsById(musicalId)){
+    public List<PerformanceSimpleResDto> getPerformancesByMusical(Long musicalId) {
+        if (!musicalRepository.existsById(musicalId)) {
             throw new CustomException(ErrorCode.MUSICAL_NOT_FOUND);
         }
-
-        //Repository의 커스텀 쿼리 호출
-        List<Performance> performances = performanceRepository.findByMusicalId(musicalId);
-
-        //Simple DTO로 변환하여 반환
+        
+        List<Performance> performances = performanceRepository.findByMusicalIdWithFetch(musicalId);
+        
         return performances.stream()
-            .map(PerformanceSimpleResDto::new)
-            .collect(Collectors.toList());
+                .map(PerformanceSimpleResDto::new)
+                .collect(Collectors.toList());
     }
 }

@@ -18,6 +18,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
@@ -39,10 +40,15 @@ public class MusicalController {
     
     //(User/All)뮤지컬 전체 목록 조회(R)
     @GetMapping
-    public ResponseEntity<List<MusicalResDto>> getAllMusicals(){
-        List<MusicalResDto> responseDtos = musicalService.getAllMusicals();
+    public ResponseEntity<List<MusicalResDto>> getAllMusicals(
+            // [추가] "section"이라는 쿼리 파라미터를 받음
+            // (required = false : 이 파라미터는 필수가 아님)
+            @RequestParam(name = "section", required = false) String section
+    ) {
+        // [수정] Service에 section 값을 전달
+        List<MusicalResDto> responseDtos = musicalService.getAllMusicals(section);
         return ResponseEntity.ok(responseDtos);
-    };
+    }
 
     //(User/All) 뮤지컬 상세 조회(R)
     @GetMapping("/{musicalId}")

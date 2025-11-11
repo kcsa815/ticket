@@ -53,6 +53,10 @@ public class SecurityConfig {
                 // 2. 세션 관리 정책: STATELESS (세션을 사용하지 않음)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
+                .headers(headers ->
+                        headers.xssProtection(xss -> xss.disable())
+                )
+                
                 // 3. URL별 권한 설정 (인가)
                 .authorizeHttpRequests(authz -> authz
                         //'OPTIONS' 메서드 요청은 인증/인가 없이 모두 허용(React 설정할 때 추가함)

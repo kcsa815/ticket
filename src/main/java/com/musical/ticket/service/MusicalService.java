@@ -12,6 +12,7 @@ import com.musical.ticket.handler.exception.ErrorCode;
 import com.musical.ticket.repository.MusicalRepository;
 import com.musical.ticket.util.FileUtil;
 import lombok.RequiredArgsConstructor;
+import java.util.Collections;
 
 @Service
 @RequiredArgsConstructor
@@ -50,11 +51,11 @@ public class MusicalService {
         //3. 엔티티 정보 업데이트
         String finalImageUrl = (newImageUrl !=null) ? newImageUrl : musical.getPosterImageUrl();
         musical.update(
-            reqDto.getTitle(),
-            reqDto.getDescription(),
-            finalImageUrl,
-            reqDto.getRunningTime(),
-            reqDto.getAgeRating()
+                reqDto.getTitle(),
+                reqDto.getDescription(), // (HTML이 포함된 description)
+                finalImageUrl,
+                reqDto.getRunningTime(),
+                reqDto.getAgeRating()
         );
         return new MusicalResDto(musical);      
     }
@@ -71,11 +72,44 @@ public class MusicalService {
     }
 
     //(User/All) 뮤지컬 전체 조회(R)
-    public List<MusicalResDto> getAllMusicals(){
+    public List<MusicalResDto> getAllMusicals(String section) {
+        
+        // (1) DB에서 '모든' 뮤지컬을 일단 다 가져옴
         List<Musical> musicals = musicalRepository.findAll();
+        
+        // (2) (임시 로직) section 값에 따라 목록을 가공/필터링
+        if (section != null) {
+            switch (section) {
+                case "ranking":
+                    // "랭킹" 요청 시: 목록을 뒤집어서 5개만 반환 (임시)
+                    Collections.reverse(musicals); // (순서 뒤집기)
+                    return musicals.stream()
+                            .limit(5) // 5개만
+                            .map(MusicalResDto::new)
+                            .collect(Collectors.toList());
+
+                case "upcoming":
+                    // "오픈 예정" 요청 시: 목록에서 짝수 ID만 4개 반환 (임시)
+                    return musicals.stream()
+                            .filter(m -> m.getId() % 2 == 0) // (ID가 짝수인 것만)
+                            .limit(4) // 4개만
+                            .map(MusicalResDto::new)
+                            .collect(Collectors.toList());
+
+                case "sale":
+                    // "할인 중" 요청 시: 목록에서 홀수 ID만 4개 반환 (임시)
+                     return musicals.stream()
+                            .filter(m -> m.getId() % 2 != 0) // (ID가 홀수인 것만)
+                            .limit(4) // 4개만
+                            .map(MusicalResDto::new)
+                            .collect(Collectors.toList());
+            }
+        }
+        
+        // (3) section 값이 없거나(null) 일치하는게 없으면 "전체" 목록 반환
         return musicals.stream()
-            .map(MusicalResDto::new)
-            .collect(Collectors.toList());
+                .map(MusicalResDto::new)
+                .collect(Collectors.toList());
     }
 
     //(User/All) 뮤지컬 상세 조회(R)
