@@ -15,6 +15,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
 import com.musical.ticket.config.jwt.JwtAuthenticationFilter;
 import com.musical.ticket.config.jwt.JwtTokenProvider;
 import com.musical.ticket.handler.security.CustomAccessDeniedHandler;
@@ -45,6 +49,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                //cors 설정 맨 위에 추가('예매 취소'가 제대로 작동 안해서 )
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 // 1. CSRF, Form Login, HTTP Basic 비활성화 (Stateless API이므로)
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
@@ -52,37 +58,44 @@ public class SecurityConfig {
 
                 // 2. 세션 관리 정책: STATELESS (세션을 사용하지 않음)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
                 .headers(headers ->
                         headers.xssProtection(xss -> xss.disable())
                 )
                 
                 // 3. URL별 권한 설정 (인가)
                 .authorizeHttpRequests(authz -> authz
-                        //'OPTIONS' 메서드 요청은 인증/인가 없이 모두 허용(React 설정할 때 추가함)
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        // 아래 경로들은 인증 없이 접근 허용 (permitAll)
+
+                        // **허용 경로**
                         .requestMatchers(
-                                "/api/users/signup", // 회원가입
-                                "/api/users/login",         // 로그인
+                                HttpMethod.GET,                 //GET요청은 대부분 허용
                                 "/api/musicals/**",         // 공연 정보 조회 (예시)
                                 "/api/venues/**",           //공연장 조회
                                 "/api/performances/**",     //공연 회차, 좌석조회
                                 "/images/**",               //이미지 파일 조회
                                 "/"
                         ).permitAll()
-
-                        // 관리자(ADMIN) 권한이 필요한 경로 (예시)
                         .requestMatchers(
-                                "/api/musicals/admin/**" // 예시: 공연 등록/수정/삭제
+                                "/api/users/signup", // 회원가입
+                                "/api/users/login"      // 로그인
+                        ).permitAll()
+
+                        // ** 관리자 경로 **
+                        .requestMatchers(
+                                HttpMethod.POST, 
+                                "/api/musicals/**",
+                                "/api/venues/**",
+                                "/api/performances/**"
+                        ).hasRole("ADMIN")
+                        .requestMatchers(
+                                HttpMethod.PUT,
+                                "/api/musicals/**"
+                        ).hasRole("ADMIN")
+                        .requestMatchers(
+                                HttpMethod.DELETE,
+                                "/api/musicals/**"
                         ).hasRole("ADMIN")
 
-                        // 'USER' 또는 'ADMIN' 권한이 필요한 경로 (예시)
-                        .requestMatchers(
-                                "/api/bookings/**" // 예매하기, 예매내역 조회 등
-                        ).hasAnyRole("USER", "ADMIN")
-
-                        // 위에서 설정한 경로 외 모든 경로는 인증(로그인) 필요
+                        // 최하순위 : 위에서 걸러지지 않은 나머지 모든 요청은 인증 필요
                         .anyRequest().authenticated())
 
                 // 4. JWT 인증 필터 추가
@@ -99,5 +112,27 @@ public class SecurityConfig {
                 );
 
         return http.build();
+    }
+
+    /*
+     * CORS 설정을 SecurityConfig에 통합
+     * (WebConfig의 addCorsMappings를 대체)
+     */
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource(){
+        CorsConfiguration config = new CorsConfiguration();
+
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin("http://localhost:5173"); //React 앱 주소
+        config.addAllowedHeader("*"); // 모든 헤더 허용
+        config.addAllowedMethod("GET");
+        config.addAllowedMethod("POST");
+        config.addAllowedMethod("PUT");
+        config.addAllowedMethod("DELETE");
+        config.addAllowedMethod("OPTIONS");
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/api/**", config);
+        return source;
     }
 }

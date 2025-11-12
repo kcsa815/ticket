@@ -33,14 +33,22 @@ public class Seat {
     @Column(name = "seat_number", nullable = false)
     private String seatNumber;
 
+    @Column(name = "x_coord", nullable = false)
+    private Integer xCoord;
+
+    @Column(name = "y_coord", nullable = false)
+    private Integer yCoord;
+
     //좌석(1) : 공연좌석(N)
     @OneToMany(mappedBy = "seat")
     private List<PerformanceSeat> performanceSeats = new ArrayList<>();
 
     @Builder
-    public Seat(Venue venue, SeatGrade seatGrade, String seatNumber, Integer price) {
+    public Seat(Venue venue, SeatGrade seatGrade, String seatNumber, Integer xCoord, Integer yCoord) {
         this.venue = venue;
         this.seatGrade = seatGrade;
         this.seatNumber = seatNumber;
+        this.xCoord = (xCoord != null) ? xCoord : 0;
+        this.yCoord = (yCoord != null) ? yCoord : 0;
     }
 }

@@ -22,12 +22,20 @@ public class SeatTemplateReqDto {
     @NotNull
     private SeatGrade seatGrade; //dP : VIP
 
+    @NotNull
+    private Integer xCoord;
+
+    @NotNull
+    private Integer yCoord;
+
     //Service에서 Venue객체를 주입받아 Entity로 변환
     public Seat toEntity(Venue venue){
         return Seat.builder()
             .venue(venue) // 연관관계(N:1) 설정
             .seatGrade(this.seatGrade)
             .seatNumber(this.seatNumber)
+            .xCoord(this.xCoord)
+            .yCoord(this.yCoord)
             .build();
     }
     
