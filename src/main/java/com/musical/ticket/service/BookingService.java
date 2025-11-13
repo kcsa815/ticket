@@ -122,7 +122,7 @@ public class BookingService {
         User user = userRepository.findByEmail(userEmail)
             .orElseThrow(()-> new CustomException(ErrorCode.USER_NOT_FOUND));
 
-        List<Booking> bookings = bookingRepository.findByUserOrderByCreatedAtDesc(user);
+        List<Booking> bookings = bookingRepository.findByUserWithFetch(user);
 
         return bookings.stream()
             .map(BookingResDto::new)

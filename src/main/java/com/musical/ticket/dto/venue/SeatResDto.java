@@ -1,12 +1,21 @@
-package com.musical.ticket.dto.seat;
-//좌석 정보 응답 dto
-
+package com.musical.ticket.dto.venue;
+/* 
+ * 작성자 : suan
+ * 좌석 정보 응답 dto
+ * 공연장 응답 dto에 포함되는 구조
+ * 
+ * 최종 수정  :2025-11-13
+*/
 import com.musical.ticket.domain.entity.PerformanceSeat;
 import com.musical.ticket.domain.entity.Seat;
 import com.musical.ticket.domain.enums.SeatGrade;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
+@NoArgsConstructor
 public class SeatResDto {
     private Long seatId;
     private Long venueId;

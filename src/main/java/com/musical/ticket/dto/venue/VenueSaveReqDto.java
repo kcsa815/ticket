@@ -4,16 +4,14 @@ package com.musical.ticket.dto.venue;
 // 이렇게 중첩된 dto구조를 사용하면, 단 한번의 API요청으로 공연장 1개와 좌석 여러개를 동시에 생성할 수 있음.
 
 import java.util.List;
-
 import com.musical.ticket.domain.entity.Venue;
-import com.musical.ticket.dto.seat.SeatTemplateReqDto;
-
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import com.musical.ticket.dto.venue.SeatTemplateReqDto;
 
 @Getter
 @Setter

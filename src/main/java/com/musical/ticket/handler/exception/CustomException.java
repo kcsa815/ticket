@@ -15,6 +15,5 @@ public class CustomException extends RuntimeException {
 
     public CustomException(ErrorCode userNotFound) {
         this.errorCode = null;
-        //TODO Auto-generated constructor stub
     }
 }

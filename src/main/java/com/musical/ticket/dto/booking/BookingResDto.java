@@ -18,7 +18,7 @@ public class BookingResDto {
     private BookingStatus bookingStatus;
     private Integer totalPrice;
     private LocalDateTime bookingDate;
-    private List<PerformanceSeatResDto> bookedStats; // 예매된 좌석 목록
+    private List<PerformanceSeatResDto> bookedSeats; // 예매된 좌석 목록
 
     // Entity -> DTO 변환
     public BookingResDto(Booking booking) {
@@ -30,7 +30,7 @@ public class BookingResDto {
         this.bookingDate = booking.getCreatedAt();
         
         // Booking엔티티가 가진 PerformanceSeat리스트를 dto리스트로 변환
-        this.bookedStats = booking.getPerformanceSeats().stream()
+        this.bookedSeats = booking.getPerformanceSeats().stream()
                 .map(PerformanceSeatResDto::new)
                 .collect(Collectors.toList());
     }

@@ -17,9 +17,7 @@ import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
 import com.musical.ticket.domain.entity.PerformanceSeat;
-
 import jakarta.persistence.LockModeType;
 
 @Repository
@@ -27,6 +25,11 @@ public interface PerformanceSeatRepository extends JpaRepository<PerformanceSeat
 
     // 동시성 제어를 위해 ID 리스트로 좌석들을 조회하며 비관적락을 검
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("SELECT ps FROM PerformanceSeat ps WHERE ps.id IN :ids")
+    @Query("SELECT ps FROM PerformanceSeat ps WHERE ps.id IN :ids ")
     List<PerformanceSeat> findAllByIdWithPessimisticLock(@Param("ids")List<Long> ids);
+
+    @Query("SELECT MIN(ps.price), MAX(ps.price) FROM PerformanceSeat ps " +
+        "JOIN ps.performance p " +
+        "WHERE p.musical.id = :musicalId")
+    List<Object[]> findMinMaxPriceByMusicalId(@Param("musicalId") Long musicalId);
 }

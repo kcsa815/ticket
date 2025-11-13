@@ -10,6 +10,7 @@ import com.musical.ticket.dto.musical.MusicalSaveReqDto;
 import com.musical.ticket.handler.exception.CustomException;
 import com.musical.ticket.handler.exception.ErrorCode;
 import com.musical.ticket.repository.MusicalRepository;
+import com.musical.ticket.repository.PerformanceSeatRepository;
 import com.musical.ticket.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import java.util.Collections;
@@ -21,6 +22,7 @@ public class MusicalService {
     
     private final MusicalRepository musicalRepository;
     private final FileUtil fileUtil; //파일 저장을 위해 주입
+    private final PerformanceSeatRepository performanceSeatRepository;
 
     //(Admin) 뮤지컬 등록(C)
     @Transactional
@@ -53,9 +55,8 @@ public class MusicalService {
         musical.update(
                 reqDto.getTitle(),
                 reqDto.getDescription(), // (HTML이 포함된 description)
-                finalImageUrl,
-                reqDto.getRunningTime(),
-                reqDto.getAgeRating()
+                finalImageUrl, reqDto.getRunningTime(),
+                reqDto.getAgeRating(), finalImageUrl
         );
         return new MusicalResDto(musical);      
     }
@@ -71,51 +72,55 @@ public class MusicalService {
         musicalRepository.delete(musical);
     }
 
-    //(User/All) 뮤지컬 전체 조회(R)
+    /*
+     * (User/All) 뮤지컬 전체 조회(R)
+     */
     public List<MusicalResDto> getAllMusicals(String section) {
+        // DB에서 '모든' 뮤지컬을 일단 다 가져옴
+        List<Musical> musicals = null;
         
-        // (1) DB에서 '모든' 뮤지컬을 일단 다 가져옴
-        List<Musical> musicals = musicalRepository.findAll();
-        
-        // (2) (임시 로직) section 값에 따라 목록을 가공/필터링
-        if (section != null) {
-            switch (section) {
-                case "ranking":
-                    // "랭킹" 요청 시: 목록을 뒤집어서 5개만 반환 (임시)
-                    Collections.reverse(musicals); // (순서 뒤집기)
-                    return musicals.stream()
-                            .limit(5) // 5개만
-                            .map(MusicalResDto::new)
-                            .collect(Collectors.toList());
+        // 1. (임시 로직) section 값에 따라 목록을 가공/필터링
+        if (section != null && !section.isEmpty()) {
+            String category = section.toUpperCase();  //ranking ->RANKING
+            musicals = musicalRepository.findByCategory(category);
 
-                case "upcoming":
-                    // "오픈 예정" 요청 시: 목록에서 짝수 ID만 4개 반환 (임시)
-                    return musicals.stream()
-                            .filter(m -> m.getId() % 2 == 0) // (ID가 짝수인 것만)
-                            .limit(4) // 4개만
-                            .map(MusicalResDto::new)
-                            .collect(Collectors.toList());
-
-                case "sale":
-                    // "할인 중" 요청 시: 목록에서 홀수 ID만 4개 반환 (임시)
-                     return musicals.stream()
-                            .filter(m -> m.getId() % 2 != 0) // (ID가 홀수인 것만)
-                            .limit(4) // 4개만
-                            .map(MusicalResDto::new)
-                            .collect(Collectors.toList());
-            }
+            int limit = "RANKING".equals(category) ? 5:4;
+            return musicals.stream()
+                .limit(limit)
+                .map(MusicalResDto::new)
+                .collect(Collectors.toList());
         }
         
-        // (3) section 값이 없거나(null) 일치하는게 없으면 "전체" 목록 반환
+        musicals = musicalRepository.findAll();
+
+        // 2. section 값이 없거나(null) 일치하는게 없으면 "전체" 목록 반환
         return musicals.stream()
                 .map(MusicalResDto::new)
                 .collect(Collectors.toList());
     }
 
-    //(User/All) 뮤지컬 상세 조회(R)
+    /*
+     *(User/All) 뮤지컬 상세 조회(R)
+    */
     public MusicalResDto getMusicalById(Long musicalId){
+        //1. 뮤지컬 조회
         Musical musical =  musicalRepository.findById(musicalId)
             .orElseThrow(()->new CustomException(ErrorCode.MUSICAL_NOT_FOUND));
-        return new MusicalResDto(musical);
+
+        //2. 가격 범위 조회
+        Integer minPrice = null;
+        Integer maxPrice = null;
+
+        try {
+            List<Object[]> priceResult = performanceSeatRepository.findMinMaxPriceByMusicalId(musicalId);
+            if(priceResult !=null && !priceResult.isEmpty() && priceResult.get(0)[0] !=null){
+                minPrice = (Integer)priceResult.get(0)[0];
+                maxPrice = (Integer)priceResult.get(0)[1];
+            }
+        } catch (Exception e) {
+            // 가격 조회 실패는 무시
+        }
+
+        return new MusicalResDto(musical, minPrice, maxPrice);
     }
 }

@@ -11,6 +11,8 @@ public class MusicalResDto {
     private String posterImageUrl;
     private Integer runningTime;
     private String ageRating;
+    private Integer minPrice;
+    private Integer maxPrice;
 
     public MusicalResDto(Musical musical) {
         this.musicalId = musical.getId();
@@ -19,5 +21,13 @@ public class MusicalResDto {
         this.posterImageUrl = musical.getPosterImageUrl();
         this.runningTime = musical.getRunningTime();
         this.ageRating = musical.getAgeRating();
+        this.minPrice = null;
+        this.maxPrice = null;
+    }
+
+    public MusicalResDto(Musical musical, Integer minPrice, Integer maxPrice){
+        this(musical);
+        this.minPrice = minPrice;
+        this.maxPrice = maxPrice;
     }
 }

@@ -36,12 +36,12 @@ public class VenueService {
 
         // 1. 공연장(Venue) 정보만 먼저 저장
         Venue venue = reqDto.toEntity();
-        Venue savedVenud = venueRepository.save(venue);
+        Venue savedVenue = venueRepository.save(venue);
 
         // 2. 좌석 템플릿(Seat) DTO 리스트를 Entity리스트로 변환
         // 이때 1번에서 저장된 Venue객체를 주입하여 연관관계 설정
         List<Seat> seats = reqDto.getSeats().stream()
-            .map(seatDto -> seatDto.toEntity(savedVenud))
+            .map(seatDto -> seatDto.toEntity(savedVenue))
             .collect(Collectors.toList());
 
         // 3. 좌석 템플릿(Seat) 리스트를 DB에 일괄 저장(Batch Insert)
@@ -49,7 +49,7 @@ public class VenueService {
 
         // 4. 저장된 Venue를 (좌석 정보 포함) 다시 조회하여 반환
         // Jpa Cascade 설정이나 양방향 편의 메서드 설정에 따라 이 부분은 최적화 가능
-        Venue fullySavedVenue = venueRepository.findById(savedVenud.getId())
+        Venue fullySavedVenue = venueRepository.findById(savedVenue.getId())
             .orElseThrow(()->new CustomException(ErrorCode.INTERNAL_SERVER_ERROR));
 
         return new VenueResDto(fullySavedVenue);
