@@ -2,7 +2,6 @@ package com.musical.ticket.domain.entity;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name ="venue")
+@Table(name = "venue")
 public class Venue {
 
     @Id
@@ -31,7 +30,11 @@ public class Venue {
     private String name;
 
     private String location;
-    
+
+    // 👇 추가: 좌석 배치도 이미지 URL
+    @Column(length = 500)
+    private String layoutImageUrl;
+
     // 공연장(1) : 좌석(N)
     @OneToMany(mappedBy = "venue", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Seat> seats = new ArrayList<>();
@@ -41,9 +44,15 @@ public class Venue {
     private List<Performance> performances = new ArrayList<>();
 
     @Builder
-    public Venue(String name, String location){
+    public Venue(String name, String location, String layoutImageUrl) {
         this.name = name;
         this.location = location;
+        this.layoutImageUrl = layoutImageUrl;
     }
-    
+
+    public void updateInfo(String name, String location, String layoutImageUrl) {
+        this.name = name;
+        this.location = location;
+        this.layoutImageUrl = layoutImageUrl;
+    }
 }
