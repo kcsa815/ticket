@@ -72,7 +72,7 @@ public class Musical {
         this.posterImageUrl = posterImageUrl;
         this.runningTime = runningTime;
         this.ageRating = ageRating;
-        this.category = (category !=null) ? category : "DEFAULT";
+        this.category = (category != null) ? category : "DEFAULT";
     }
 
 }

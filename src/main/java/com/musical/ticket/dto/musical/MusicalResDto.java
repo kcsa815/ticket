@@ -13,7 +13,9 @@ public class MusicalResDto {
     private String ageRating;
     private Integer minPrice;
     private Integer maxPrice;
+    private String category;
 
+    /*기존 생성자 */
     public MusicalResDto(Musical musical) {
         this.musicalId = musical.getId();
         this.title = musical.getTitle();
@@ -23,8 +25,10 @@ public class MusicalResDto {
         this.ageRating = musical.getAgeRating();
         this.minPrice = null;
         this.maxPrice = null;
+        this.category = musical.getCategory();
     }
 
+    /*가격 포함 생성자 */
     public MusicalResDto(Musical musical, Integer minPrice, Integer maxPrice){
         this(musical);
         this.minPrice = minPrice;

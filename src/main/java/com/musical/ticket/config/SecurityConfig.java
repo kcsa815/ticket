@@ -49,66 +49,60 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                //cors 설정 맨 위에 추가('예매 취소'가 제대로 작동 안해서 )
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                // 1. CSRF, Form Login, HTTP Basic 비활성화 (Stateless API이므로)
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
-
-                // 2. 세션 관리 정책: STATELESS (세션을 사용하지 않음)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .headers(headers ->
-                        headers.xssProtection(xss -> xss.disable())
-                )
-                
-                // 3. URL별 권한 설정 (인가)
+                .headers(headers -> headers.xssProtection(xss -> xss.disable()))
+
                 .authorizeHttpRequests(authz -> authz
+                    
+                    // (1순위) "허용"할 경로들 (인증 불필요)
+                    .requestMatchers(
+                            // (A) 로그인/회원가입
+                            "/api/users/signup",
+                            "/api/users/login"
+                    ).permitAll()
+                    .requestMatchers(
+                            // (B) 모든 GET 조회 요청 (이미지 포함)
+                            HttpMethod.GET, 
+                            "/api/musicals/**",
+                            "/api/venues/**",
+                            "/api/performances/**",
+                            "/images/**",
+                            "/"
+                    ).permitAll()
+                    
+                    // (2순위) "ADMIN"만 허용할 경로
+                    .requestMatchers(
+                            HttpMethod.POST, "/api/musicals/**", "/api/venues/**", "/api/performances/**"
+                    ).hasRole("ADMIN")
+                    .requestMatchers(
+                            HttpMethod.PUT, "/api/musicals/**"
+                    ).hasRole("ADMIN")
+                    .requestMatchers(
+                            HttpMethod.DELETE, "/api/musicals/**"
+                    ).hasRole("ADMIN")
+                    
+                    // (3순위) "USER" (또는 ADMIN)만 허용할 경로
+                    // (예: 예매하기, 예매 취소, 내 정보 보기)
+                    .requestMatchers(
+                            "/api/bookings/**", // 예매/취소/내역
+                            "/api/users/me"     // 내 정보
+                    ).hasAnyRole("USER", "ADMIN")
 
-                        // **허용 경로**
-                        .requestMatchers(
-                                HttpMethod.GET,                 //GET요청은 대부분 허용
-                                "/api/musicals/**",         // 공연 정보 조회 (예시)
-                                "/api/venues/**",           //공연장 조회
-                                "/api/performances/**",     //공연 회차, 좌석조회
-                                "/images/**",               //이미지 파일 조회
-                                "/"
-                        ).permitAll()
-                        .requestMatchers(
-                                "/api/users/signup", // 회원가입
-                                "/api/users/login"      // 로그인
-                        ).permitAll()
+                    // (최하순위) 위에서 걸러지지 않은 '나머지 모든' 요청은 인증 필요
+                    .anyRequest().authenticated()
+                )
 
-                        // ** 관리자 경로 **
-                        .requestMatchers(
-                                HttpMethod.POST, 
-                                "/api/musicals/**",
-                                "/api/venues/**",
-                                "/api/performances/**"
-                        ).hasRole("ADMIN")
-                        .requestMatchers(
-                                HttpMethod.PUT,
-                                "/api/musicals/**"
-                        ).hasRole("ADMIN")
-                        .requestMatchers(
-                                HttpMethod.DELETE,
-                                "/api/musicals/**"
-                        ).hasRole("ADMIN")
 
-                        // 최하순위 : 위에서 걸러지지 않은 나머지 모든 요청은 인증 필요
-                        .anyRequest().authenticated())
-
-                // 4. JWT 인증 필터 추가
-                // 만들었던 JwtAuthenticationFilter를
-                // UsernamePasswordAuthenticationFilter (기본 로그인 필터) 보다 앞에 배치
                 .addFilterBefore(
                         new JwtAuthenticationFilter(jwtTokenProvider),
                         UsernamePasswordAuthenticationFilter.class)
-
-                // 5. 예외 핸들링 추가
                 .exceptionHandling(ex -> ex
-                        .authenticationEntryPoint(customAuthenticationEntryPoint) // 401 처리
-                        .accessDeniedHandler(customAccessDeniedHandler)         // 403 처리
+                        .authenticationEntryPoint(customAuthenticationEntryPoint)
+                        .accessDeniedHandler(customAccessDeniedHandler)
                 );
 
         return http.build();
