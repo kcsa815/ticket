@@ -135,4 +135,13 @@ public class PerformanceService {
                 .map(PerformanceSimpleResDto::new)
                 .collect(Collectors.toList());
     }
+
+    //지도 UI 용 
+    public List<PerformanceSimpleResDto> getPerformancesByRegion(String region) {
+        List<Performance> performances = performanceRepository.findByVenueRegionWithFetch(region);
+
+        return performances.stream()
+            .map(PerformanceSimpleResDto::new)
+            .collect(Collectors.toList());
+    }
 }

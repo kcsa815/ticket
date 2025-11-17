@@ -52,6 +52,16 @@ public class PerformanceController {
         PerformanceResDto responseDto = performanceService.getPerformanceDetails(performanceId);
         return ResponseEntity.ok(responseDto);
     }
+
+    //지도(UI용)
+    @GetMapping("/region/{regionName}")
+    public ResponseEntity<List<PerformanceSimpleResDto>> getPerformancesByRegion(
+        @PathVariable String regionName
+    ){
+        //서비스에 새 메서드 만듦
+        List<PerformanceSimpleResDto> responseDtos = performanceService.getPerformancesByRegion(regionName.toUpperCase());
+        return ResponseEntity.ok(responseDtos);
+    }
     
 }    
 

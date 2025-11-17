@@ -29,5 +29,12 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long> 
            "LEFT JOIN FETCH s.venue sv " +              // (3)좌석 템플릿의 공연장
            "WHERE p.id = :performanceId")
     Optional<Performance> findByIdWithFetch(@Param("performanceId") Long performanceId);
-    // --- 👆👆👆 ---
+
+    // 지도 UI용
+    @Query("SELECT p FROM Performance p " +
+              "JOIN FETCH p.musical m " +
+              "JOIN FETCH p.venue v " +
+              "WHERE v.region = :region")
+       List<Performance> findByVenueRegionWithFetch(@Param("region") String region);
+
 }

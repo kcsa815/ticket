@@ -19,19 +19,20 @@ public class VenueSaveReqDto {
 
     private String location;
 
-    @NotEmpty(message = "좌석의 탬플릿은 최소 1개 이상 등록해야 합니다.")
-    @Valid
+    @NotBlank(message = "region은 널이어서는 안됩니다")
+    private String region; // (예: "SEOUL")
+
+    @NotEmpty(message = "좌석 템플릿은 최소 1개 이상 등록해야 합니다.")
+    @Valid 
     private List<SeatTemplateReqDto> seats;
 
-    // 👇 추가: 배경 이미지 URL
-    private String layoutImageUrl;
-
-    // Service에서 Entity로 변환(좌석 제외, 공연장 정보만)
-    public Venue toEntity(){
+    // [수정!] Service에서 layoutImageUrl을 받아 Entity로 변환
+    public Venue toEntity(String layoutImageUrl){
         return Venue.builder()
-            .name(this.name)
-            .location(this.location)
-            .layoutImageUrl(this.layoutImageUrl)  // 👈 추가
-            .build();
+                .name(this.name)
+                .location(this.location)
+                .region(this.region)
+                .layoutImageUrl(layoutImageUrl) // 👈 [수정!]
+                .build();
     }
 }
