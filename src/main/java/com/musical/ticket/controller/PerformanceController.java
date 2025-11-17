@@ -18,6 +18,7 @@ import com.musical.ticket.service.PerformanceService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
@@ -53,12 +54,13 @@ public class PerformanceController {
         return ResponseEntity.ok(responseDto);
     }
 
-    //지도(UI용)
-    @GetMapping("/region/{regionName}")
+    // ---(지도 UI용) ---
+    // (GET /api/performances/region?name=SEOUL)
+    @GetMapping("/region")
     public ResponseEntity<List<PerformanceSimpleResDto>> getPerformancesByRegion(
-        @PathVariable String regionName
-    ){
-        //서비스에 새 메서드 만듦
+            @RequestParam("name") String regionName
+    ) {
+        // (Service에 새 메서드를 만들어야 함)
         List<PerformanceSimpleResDto> responseDtos = performanceService.getPerformancesByRegion(regionName.toUpperCase());
         return ResponseEntity.ok(responseDtos);
     }

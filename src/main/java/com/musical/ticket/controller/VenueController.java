@@ -31,7 +31,7 @@ public class VenueController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<VenueResDto> saveVenue(
-        @Valid @RequestPart("venueDto") VenueSaveReqDto reqDto, // (Key: "venueDto")
+        @Valid @RequestPart("venue") VenueSaveReqDto reqDto, // (Key: "venueDto")
         @RequestPart(value = "layoutImage", required = false) MultipartFile layoutImage
     ){
         VenueResDto responseDto = venueService.saveVenue(reqDto, layoutImage);
@@ -43,7 +43,7 @@ public class VenueController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<VenueResDto> updateVenue(
         @PathVariable Long venueId,
-        @Valid @RequestPart("venueDto") VenueSaveReqDto reqDto,
+        @Valid @RequestPart("venue") VenueSaveReqDto reqDto,
         @RequestPart(value = "layoutImage", required = false) MultipartFile layoutImage
     ){
         VenueResDto responseDto = venueService.updateVenue(venueId, reqDto, layoutImage);
