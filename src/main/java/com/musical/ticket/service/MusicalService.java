@@ -70,27 +70,26 @@ public class MusicalService {
     }
 
     /**
-     * (User/All) 뮤지컬 전체 조회 (R)
-     * [수정!] N+1 쿼리로 가격(min/max)과 첫 번째 공연장(venueName)을 함께 조회
+     * (User/All) 뮤지컬 전체 조회(R)
      */
     public List<MusicalResDto> getAllMusicals(String section) {
         
         List<Musical> musicals;
 
-        // (1) 기본 뮤지컬 목록 조회
+        // (1) section 값이 있으면 (HomePage)
         if (section != null && !section.isEmpty()) {
-            String category = section.toUpperCase();
-            musicals = musicalRepository.findByCategory(category);
-        } else {
+            String category = section.toUpperCase(); 
+            musicals = musicalRepository.findByCategory(category); 
+        }
+        else {
+            // (2) section 값이 없으면 (MusicalListPage) "전체" 목록 반환
             musicals = musicalRepository.findAll();
         }
         
-        // --- 👇 [4. (핵심 수정!) N+1 쿼리로 DTO를 수동 생성] ---
-        // (N+1: 뮤지컬 10개를 조회하면, 10번의 가격 쿼리 + 10번의 공연장 쿼리가 추가로 나감)
+        // (3) (N+1 쿼리로 DTO를 수동 생성)
         List<MusicalResDto> dtoList = musicals.stream()
             .map(musical -> {
-                
-                // (A) N+1 쿼리: 가격 범위 조회
+                // ... (N+1 쿼리: 가격/공연장 조회) ...
                 Integer minPrice = null;
                 Integer maxPrice = null;
                 try {
@@ -99,37 +98,22 @@ public class MusicalService {
                         minPrice = (Integer) priceResult.get(0)[0];
                         maxPrice = (Integer) priceResult.get(0)[1];
                     }
-                } catch (Exception e) {} // (오류 시 null 유지)
+                } catch (Exception e) {} 
 
-                // (B) N+1 쿼리: 첫 번째 공연장 이름 조회
                 String venueName = null;
                 try {
-                    // (findByMusicalIdWithFetch 쿼리를 재사용하여 첫 번째 공연장만 가져옴)
                     List<Performance> perfs = performanceRepository.findByMusicalIdWithFetch(musical.getId());
                     if (!perfs.isEmpty()) {
                         venueName = perfs.get(0).getVenue().getName();
                     }
-                } catch (Exception e) {} // (오류 시 null 유지)
+                } catch (Exception e) {} 
 
-                // (C) DTO 생성 (가격 정보 포함)
                 MusicalResDto dto = new MusicalResDto(musical, minPrice, maxPrice);
-                // (D) DTO에 공연장 이름 주입 (Setter 사용)
                 dto.setVenueName(venueName); 
                 return dto;
-                
             })
             .collect(Collectors.toList());
-        // --- 👆 [수정 끝] ---
-
-
-        // (5) (HomePage용) limit 로직은 "최종" DTO 리스트에 적용
-        if (section != null && !section.isEmpty()) {
-            String category = section.toUpperCase();
-            int limit = "RANKING".equals(category) ? 5 : 4;
-            return dtoList.stream().limit(limit).collect(Collectors.toList());
-        }
-
-        // (6) (ListPage용) DTO 전체 목록 반환
+        // (5) (ListPage용) DTO 전체 목록 반환
         return dtoList;
     }
     

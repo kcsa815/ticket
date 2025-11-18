@@ -137,12 +137,27 @@ public class PerformanceService {
                 .collect(Collectors.toList());
     }
 
-    // (지도 UI용) ---
-    public List<PerformanceSimpleResDto> getPerformancesByRegion(String region) {
-        List<Performance> performances = performanceRepository.findByVenueRegionWithFetch(region);
+    // (지도 UI용) --- 특정 지역의 모든 공연 회차 목록 조회(R)
+    public List<PerformanceSimpleResDto> getPerformancesByRegion(String regionName) {
+        System.out.println("🔍 Service - 검색할 지역: " + regionName);
+
+        List<Performance> performances = performanceRepository.findByVenueRegionWithFetch(regionName);
+
+        System.out.println("🔍 Service - 조회된 공연 수: " + performances.size());
+
+        if (performances.isEmpty()) {
+            // DB에 실제로 어떤 region 값들이 있는지 확인
+            List<String> allRegions = performanceRepository.findAll()
+                    .stream()
+                    .map(p -> p.getVenue().getRegion())
+                    .distinct()
+                    .collect(Collectors.toList());
+
+            System.out.println("🔍 Service - DB에 존재하는 모든 region 값: " + allRegions);
+        }
 
         return performances.stream()
-                .map(PerformanceSimpleResDto::new)
-                .collect(Collectors.toList());
+        .map(PerformanceSimpleResDto::new)  // 또는 .map(p -> new PerformanceSimpleResDto(p))
+        .collect(Collectors.toList());
     }
 }
