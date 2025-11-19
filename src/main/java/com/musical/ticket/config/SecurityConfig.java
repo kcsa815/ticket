@@ -18,7 +18,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
 import com.musical.ticket.config.jwt.JwtAuthenticationFilter;
 import com.musical.ticket.config.jwt.JwtTokenProvider;
 import com.musical.ticket.handler.security.CustomAccessDeniedHandler;
@@ -92,21 +91,16 @@ public class SecurityConfig {
      * (WebConfig의 addCorsMappings를 대체)
      */
     @Bean
-    public CorsConfigurationSource corsConfigurationSource(){
+    public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-
+        
+        //특정 주소 대신 "모두 허용" 패턴 사용
+        config.addAllowedOriginPattern("*"); 
+        config.addAllowedOrigin("https://ticket-frontend-swart.vercel.app");
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("https://ticket-frontend-swart.vercel.app"); 
-        // (로컬 테스트용)
-        config.addAllowedOrigin("http://localhost:5173");
-        config.addAllowedHeader("*"); // 모든 헤더 허용
-        config.addAllowedMethod("*"); // 모든 메서드 허용
-        config.addAllowedMethod("GET");
-        config.addAllowedMethod("POST");
-        config.addAllowedMethod("PUT");
-        config.addAllowedMethod("DELETE");
-        config.addAllowedMethod("OPTIONS");
-
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;
