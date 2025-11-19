@@ -5,7 +5,7 @@ COPY . .
 
 # radlew 파일에 실행 권한을 강제로 부여
 RUN chmod +x ./gradlew
-
+RUN mkdir -p /app/uploads && chmod 777 /app/uploads
 # 빌드 실행 (테스트 건너뛰기)
 RUN ./gradlew build -x test --no-daemon
 
