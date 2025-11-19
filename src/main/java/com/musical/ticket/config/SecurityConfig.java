@@ -56,10 +56,10 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             
             .authorizeHttpRequests(authz -> authz
-                // 1. "Preflight" (OPTIONS) 요청은 무조건 허용 (CORS 필수)
+                // 1. OPTIONS (Preflight) 허용
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                // 2. 로그인/회원가입/조회 등 "공개" 경로
+                // 2. 공개 경로 (로그인, 회원가입, 조회, 이미지, 헬스체크, 에러페이지)
                 .requestMatchers(
                         "/api/users/signup",
                         "/api/users/login",
@@ -67,10 +67,11 @@ public class SecurityConfig {
                         "/api/venues/**",
                         "/api/performances/**",
                         "/images/**",
-                        "/"
+                        "/",       // HealthController (메인)
+                        "/error"   // 에러 페이지 (중요!)
                 ).permitAll()
 
-                // 3. 나머지(예매 등)는 인증 필요
+                // 3. 나머지 인증 필요
                 .anyRequest().authenticated()
             )
 
