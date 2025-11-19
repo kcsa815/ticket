@@ -6,27 +6,31 @@ import com.musical.ticket.domain.enums.SeatGrade;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+// (Lombok 제거 - 수동 Getter/Setter)
 public class SeatTemplateReqDto {
 
-    @NotBlank
+    @NotBlank(message = "seatNumber는 널이어서는 안됩니다")
     private String seatNumber;
-    @NotNull
+
+    @NotNull(message = "seatGrade는 널이어서는 안됩니다")
     private SeatGrade seatGrade;
-    @NotNull
+
+    @NotNull(message = "xCoord는 널이어서는 안됩니다")
     private Integer xCoord;
-    @NotNull
+
+    @NotNull(message = "yCoord는 널이어서는 안됩니다")
     private Integer yCoord;
 
-    // 기본 생성자
+    // (기본 생성자)
     public SeatTemplateReqDto() {}
 
-    // Getter
+    // (Getter)
     public String getSeatNumber() { return seatNumber; }
     public SeatGrade getSeatGrade() { return seatGrade; }
     public Integer getXCoord() { return xCoord; }
     public Integer getYCoord() { return yCoord; }
 
-    // Setter
+    // (Setter)
     public void setSeatNumber(String seatNumber) { this.seatNumber = seatNumber; }
     public void setSeatGrade(SeatGrade seatGrade) { this.seatGrade = seatGrade; }
     public void setXCoord(Integer xCoord) { this.xCoord = xCoord; }
@@ -34,7 +38,7 @@ public class SeatTemplateReqDto {
 
     public Seat toEntity(Venue venue) {
         return Seat.builder()
-                .venue(venue)
+                .venue(venue) 
                 .seatGrade(this.seatGrade)
                 .seatNumber(this.seatNumber)
                 .xCoord(this.xCoord)

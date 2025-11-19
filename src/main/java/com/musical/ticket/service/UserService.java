@@ -7,7 +7,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.musical.ticket.config.jwt.JwtTokenProvider;
 import com.musical.ticket.domain.entity.User;
 import com.musical.ticket.dto.security.TokenDto;
@@ -18,7 +17,6 @@ import com.musical.ticket.handler.exception.CustomException;
 import com.musical.ticket.handler.exception.ErrorCode;
 import com.musical.ticket.repository.UserRepository;
 import com.musical.ticket.util.SecurityUtil;
-
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -31,7 +29,7 @@ public class UserService {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
 
-    // 회원가입
+    // 회원가입 (C)
     @Transactional
     public UserResDto signUp(UserSignUpReqDto reqDto) {
         if (userRepository.existsByEmail(reqDto.getEmail())) {
@@ -44,28 +42,40 @@ public class UserService {
                 .username(reqDto.getUsername())
                 .role(reqDto.toEntity().getRole())
                 .build();
-        return new UserResDto(userRepository.save(user));
+        User savedUser = userRepository.save(user);
+        return new UserResDto(savedUser);
     }
 
-    // 로그인 (JWT 버전 - 이거 하나만 있어야 함!)
+    // 로그인 (R) - (TokenDto 반환하는 최신 버전 하나만 남김)
     @Transactional
     public TokenDto login(UserLoginReqDto reqDto) {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(reqDto.getEmail(), reqDto.getPassword());
 
         try {
-            Authentication authentication = authenticationManager.authenticate(authenticationToken);
-            return jwtTokenProvider.generateToken(authentication);
+            Authentication authentication = authenticationManager.authenticate(authenticationToken); 
+            TokenDto tokenDto = jwtTokenProvider.generateToken(authentication);
+            return tokenDto;
         } catch (AuthenticationException e) {
+            if (!userRepository.existsByEmail(reqDto.getEmail())) {
+                 throw new CustomException(ErrorCode.USER_NOT_FOUND);
+            }
             throw new CustomException(ErrorCode.PASSWORD_NOT_MATCH);
         }
     }
 
+    // 회원 정보 단건 조회 (R)
+    public UserResDto getUserInfoById(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        return new UserResDto(user);
+    }
+
     // 내 정보 조회
-    public UserResDto getMyInfo() {
+    public UserResDto getMyInfo(){
         String userEmail = SecurityUtil.getCurrentUserEmail();
         User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+                .orElseThrow(()-> new CustomException(ErrorCode.USER_NOT_FOUND));
         return new UserResDto(user);
     }
 }
