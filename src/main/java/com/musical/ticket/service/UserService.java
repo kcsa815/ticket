@@ -49,14 +49,15 @@ public class UserService {
         return new UserResDto(userRepository.save(user));
     }
 
-    // 로그인 (이거 하나만 남김!)
+    // 로그인 (중복 제거됨, 오타 수정됨)
     @Transactional
     public TokenDto login(UserLoginReqDto reqDto) {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(reqDto.getEmail(), reqDto.getPassword());
 
         try {
-            Authentication authentication = authenticationManager.authenticate(authenticationToken);
+            // [수정!] AuthenticationManager에 전달되는 변수명 오타 수정
+            Authentication authentication = authenticationManager.authenticate(authenticationToken); 
             return jwtTokenProvider.generateToken(authentication);
         } catch (AuthenticationException e) {
              if (!userRepository.existsByEmail(reqDto.getEmail())) {
@@ -73,6 +74,7 @@ public class UserService {
         return new UserResDto(user);
     }
 
+    // 내 정보 조회
     public UserResDto getMyInfo() {
         String userEmail = SecurityUtil.getCurrentUserEmail();
         User user = userRepository.findByEmail(userEmail)

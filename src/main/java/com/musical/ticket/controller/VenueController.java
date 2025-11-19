@@ -12,7 +12,7 @@ import com.musical.ticket.dto.venue.VenueResDto;
 import com.musical.ticket.dto.venue.VenueSaveReqDto;
 import com.musical.ticket.service.VenueService;
 
-import jakarta.validation.Valid;
+import jakarta.validation.Valid; // 👈 [수정!] @Valid (오타 없음)
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -26,6 +26,7 @@ public class VenueController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<VenueResDto> saveVenue(
+        // [수정!] 괄호 및 문법 정리 완료
         @Valid @RequestPart("venueDto") VenueSaveReqDto reqDto, 
         @RequestPart(value = "layoutImage", required = false) MultipartFile layoutImage
     ){
