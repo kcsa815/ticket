@@ -118,6 +118,7 @@ public class SecurityConfig {
 
         config.setAllowCredentials(true);
         config.addAllowedOrigin("http://localhost:5173"); //React 앱 주소
+        config.addAllowedOrigin("https://musical-front.vercel.app"); //vercel로 배포된 React 앱 주소
         config.addAllowedHeader("*"); // 모든 헤더 허용
         config.addAllowedMethod("GET");
         config.addAllowedMethod("POST");
