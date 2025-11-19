@@ -65,7 +65,8 @@
 - **해결:** DTO 필드명을 명확히 통일하고, Spring Security 설정에서 배포된 프론트엔드 도메인에 대한 CORS 허용 설정 추가.
 
  ## 📂 ERD
-ERD사진
+<img width="1323" height="714" alt="DB_ERD" src="https://github.com/user-attachments/assets/de1f1fc3-43ac-44e2-9dcc-234557ee34ff" />
+
 
 ## 🖥️ Screen Shots
 (주요 기능 스크린샷을 3~4장 :메인화면, 좌석선택화면, 지도화면 등)
