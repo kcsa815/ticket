@@ -49,52 +49,31 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(AbstractHttpConfigurer::disable)
-                .formLogin(AbstractHttpConfigurer::disable)
-                .httpBasic(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .headers(headers -> headers.xssProtection(xss -> xss.disable()))
+            // (CORS 설정 적용)
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .csrf(AbstractHttpConfigurer::disable)
+            .formLogin(AbstractHttpConfigurer::disable)
+            .httpBasic(AbstractHttpConfigurer::disable)
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            
+            .authorizeHttpRequests(authz -> authz
+                // 1. "Preflight" (OPTIONS) 요청은 무조건 허용 (CORS 필수)
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                .authorizeHttpRequests(authz -> authz
-                    
-                    // (1순위) "허용"할 경로들 (인증 불필요)
-                    .requestMatchers(
-                            // (A) 로그인/회원가입
-                            "/api/users/signup",
-                            "/api/users/login"
-                    ).permitAll()
-                    .requestMatchers(
-                            // (B) 모든 GET 조회 요청 (이미지 포함)
-                            HttpMethod.GET, 
-                            "/api/musicals/**",
-                            "/api/venues/**",
-                            "/api/performances/**",
-                            "/images/**",
-                            "/"
-                    ).permitAll()
-                    
-                    // (2순위) "ADMIN"만 허용할 경로
-                    .requestMatchers(
-                            HttpMethod.POST, "/api/musicals/**", "/api/venues/**", "/api/performances/**"
-                    ).hasRole("ADMIN")
-                    .requestMatchers(
-                            HttpMethod.PUT, "/api/musicals/**"
-                    ).hasRole("ADMIN")
-                    .requestMatchers(
-                            HttpMethod.DELETE, "/api/musicals/**"
-                    ).hasRole("ADMIN")
-                    
-                    // (3순위) "USER" (또는 ADMIN)만 허용할 경로
-                    // (예: 예매하기, 예매 취소, 내 정보 보기)
-                    .requestMatchers(
-                            "/api/bookings/**", // 예매/취소/내역
-                            "/api/users/me"     // 내 정보
-                    ).hasAnyRole("USER", "ADMIN")
+                // 2. 로그인/회원가입/조회 등 "공개" 경로
+                .requestMatchers(
+                        "/api/users/signup",
+                        "/api/users/login",
+                        "/api/musicals/**",
+                        "/api/venues/**",
+                        "/api/performances/**",
+                        "/images/**",
+                        "/"
+                ).permitAll()
 
-                    // (최하순위) 위에서 걸러지지 않은 '나머지 모든' 요청은 인증 필요
-                    .anyRequest().authenticated()
-                )
+                // 3. 나머지(예매 등)는 인증 필요
+                .anyRequest().authenticated()
+            )
 
 
                 .addFilterBefore(
@@ -117,8 +96,9 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://localhost:5173"); //React 앱 주소
-        config.addAllowedOrigin("https://ticket-frontend-swart.vercel.app"); //vercel로 배포된 React 앱 주소
+        config.addAllowedOrigin("https://ticket-frontend-swart.vercel.app"); 
+        // (로컬 테스트용)
+        config.addAllowedOrigin("http://localhost:5173");
         config.addAllowedHeader("*"); // 모든 헤더 허용
         config.addAllowedMethod("GET");
         config.addAllowedMethod("POST");
