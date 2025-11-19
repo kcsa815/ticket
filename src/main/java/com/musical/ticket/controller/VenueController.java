@@ -5,17 +5,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping; 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import com.musical.ticket.dto.venue.VenueResDto;
 import com.musical.ticket.dto.venue.VenueSaveReqDto;
 import com.musical.ticket.service.VenueService;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -26,7 +22,7 @@ public class VenueController {
     
     private final VenueService venueService;
 
-    //(Admin) 공연장 및 좌석 템플릿 등록(C)
+    // 공연장 등록 (JSON + 이미지 파일)
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<VenueResDto> saveVenue(
@@ -37,7 +33,7 @@ public class VenueController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
-    //(Admin) 공연장 수정(U)
+    // 공연장 수정
     @PutMapping(value = "/{venueId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<VenueResDto> updateVenue(
@@ -49,17 +45,15 @@ public class VenueController {
         return ResponseEntity.ok(responseDto);
     }
 
-    //(All) 공연장 전체 목록 조회(R)
+    // 목록 조회
     @GetMapping
     public ResponseEntity<List<VenueResDto>> getAllVenues(){
-        List<VenueResDto> responseDtos = venueService.getAllVenues();
-        return ResponseEntity.ok(responseDtos);
+        return ResponseEntity.ok(venueService.getAllVenues());
     }
 
-    //(All) 공연장 상세 조회(R)
+    // 상세 조회
     @GetMapping("/{venueId}")
     public ResponseEntity<VenueResDto> getVenueById(@PathVariable Long venueId){
-        VenueResDto responseDto = venueService.getVenueById(venueId);
-        return ResponseEntity.ok(responseDto);
+        return ResponseEntity.ok(venueService.getVenueById(venueId));
     }
 }
