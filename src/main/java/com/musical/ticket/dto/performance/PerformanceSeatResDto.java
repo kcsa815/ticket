@@ -16,29 +16,31 @@ import lombok.Getter;
 
 @Getter
 public class PerformanceSeatResDto {
+
+    private Long performanceSeatId;
+    private String seatNumber;
+    private SeatGrade seatGrade;
+    private Integer price;
+    private Boolean isReserved;
     
-    private Long performanceSeatId;     //예매할 때 사용할 ID
-    private Long seatId;                //좌석 탬플릿 원본 ID
-    private String seatNumber;          //좌석 번호 ("예 : "A-10")
-    private SeatGrade seatGrade;        //좌석 등급 ("예 : "VIP")
-    private Integer price;              // 이 회차의 가격
-    private Boolean isReserved;         //예약 상태
-    private Integer xCoord;             //x좌표 필드
-    private Integer yCoord;             //y좌표 필드
+    // --- 👇 [핵심!] 좌표 필드 추가 ---
+    private Integer xCoord;
+    private Integer yCoord;
+    // --- 👆 ---
 
-    public PerformanceSeatResDto(PerformanceSeat performanceSeat){
-        Seat seat = performanceSeat.getSeat();
-
+    public PerformanceSeatResDto(PerformanceSeat performanceSeat) {
         this.performanceSeatId = performanceSeat.getId();
         this.price = performanceSeat.getPrice();
         this.isReserved = performanceSeat.getIsReserved();
-
-        //Seat 템플릿에서 정보 가져오기
+        
+        // Seat 템플릿에서 정보 가져오기
+        Seat seat = performanceSeat.getSeat();
         this.seatNumber = seat.getSeatNumber();
         this.seatGrade = seat.getSeatGrade();
         
-        //좌표 값 할당
-        this.xCoord = seat.getXCoord(); 
+        // --- 👇 [핵심!] 좌표 값 꺼내오기 ---
+        this.xCoord = seat.getXCoord();
         this.yCoord = seat.getYCoord();
+        // --- 👆 ---
     }
 }

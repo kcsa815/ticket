@@ -24,9 +24,8 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long> 
     @Query("SELECT p FROM Performance p " +
            "JOIN FETCH p.musical m " +
            "JOIN FETCH p.venue v " +
-           "LEFT JOIN FETCH p.performanceSeats ps " +   //  (1) 공연 좌석들
-           "LEFT JOIN FETCH ps.seat s " +               // (2) 좌석 템플릿 (좌표가 여기 있음)
-           "LEFT JOIN FETCH s.venue sv " +              // (3)좌석 템플릿의 공연장
+           "LEFT JOIN FETCH p.performanceSeats ps " + // (공연 좌석)
+           "LEFT JOIN FETCH ps.seat s " +             //  (좌석 템플릿 - 여기에 좌표가 있음)
            "WHERE p.id = :performanceId")
     Optional<Performance> findByIdWithFetch(@Param("performanceId") Long performanceId);
 
