@@ -15,10 +15,10 @@ public class SeatTemplateReqDto {
     private SeatGrade seatGrade;
 
     @NotNull
-    private Integer xCoord; // 대소문자 주의! (xCoord)
+    private Integer xCoord;
 
     @NotNull
-    private Integer yCoord; // 대소문자 주의! (yCoord)
+    private Integer yCoord;
 
     public SeatTemplateReqDto() {}
 

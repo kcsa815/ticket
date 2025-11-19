@@ -49,7 +49,7 @@ public class UserService {
         return new UserResDto(userRepository.save(user));
     }
 
-    // 로그인 (중복 제거됨, 오타 수정됨)
+    // 로그인 (이거 하나만 남김!)
     @Transactional
     public TokenDto login(UserLoginReqDto reqDto) {
         UsernamePasswordAuthenticationToken authenticationToken =

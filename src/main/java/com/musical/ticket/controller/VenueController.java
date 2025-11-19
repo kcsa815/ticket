@@ -22,7 +22,7 @@ public class VenueController {
     
     private final VenueService venueService;
 
-    // 공연장 등록 (JSON + 이미지 파일)
+    // 공연장 등록
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<VenueResDto> saveVenue(
