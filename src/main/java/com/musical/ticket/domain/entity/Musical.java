@@ -46,7 +46,7 @@ public class Musical {
         this.runningTime = runningTime;
         this.ageRating = ageRating;
         this.category = (category != null) ? category : "DEFAULT";
-    }
+    }   
 
     // (update 메서드는 동일)
     public void update(String title, String description, String posterImageUrl, Integer runningTime, String ageRating, String category) {
