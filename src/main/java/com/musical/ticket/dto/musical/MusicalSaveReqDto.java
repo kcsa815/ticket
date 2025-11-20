@@ -1,4 +1,5 @@
 package com.musical.ticket.dto.musical;
+
 import org.springframework.web.multipart.MultipartFile;
 /* 
  * 작성자 : suan
@@ -24,7 +25,7 @@ public class MusicalSaveReqDto {
     private String title;
 
     private String description;
-    
+
     private MultipartFile posterImage;
 
     private String category;
@@ -36,13 +37,13 @@ public class MusicalSaveReqDto {
     private String ageRating;
 
     public Musical toEntity(String posterImageUrl) {
-        return Musical.builder()
-                .title(this.title)
-                .description(this.description)
-                .posterImageUrl(posterImageUrl) //service에서 저장한 url
-                .runningTime(this.runningTime)
-                .ageRating(this.ageRating)
-                .category(this.category)
-                .build();
+        // --- Builder 대신 New 생성자 호출 ---
+        return new Musical(
+                this.title,
+                this.description,
+                posterImageUrl,
+                this.runningTime,
+                this.ageRating,
+                this.category);
     }
 }

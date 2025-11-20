@@ -1,75 +1,94 @@
 package com.musical.ticket.util;
-import java.io.IOException;
-//파일을 서버에 서장하고 파일명을 UUID로 변환하는 등 반복적 작업을 처리할 Util
-import java.nio.file.Files;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
+
 import com.musical.ticket.handler.exception.CustomException;
 import com.musical.ticket.handler.exception.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.UUID;
 
 @Slf4j
-@Component //String이 관리하는 Bean으로 등록
+@Component
 public class FileUtil {
-    
-    private final String uploadDir;
 
-    public FileUtil(@Value("${file.upload-dir}") String uploadDir){
-        this.uploadDir = uploadDir;
-    }
+    // application.properties에서 file.upload-dir 경로 주입
+    @Value("${file.upload-dir}")
+    private String uploadDir;
 
-    //MultipartFile을 서버의 저장된 경로에 저장
-    public String saveFile(MultipartFile file){
-        if(file ==null || file.isEmpty()){
-            return null; //파일이 없으면 null반환
+    /**
+     * 파일 저장 (MultipartFile -> 파일 시스템)
+     * @param file 포스터 이미지 파일
+     * @return 저장된 파일의 논리적 경로 (예: /images/uuid.jpg)
+     */
+    public String saveFile(MultipartFile file) {
+        // 1. 파일이 비어있는지 체크 (AdminPage에서 required=false일 경우 대비)
+        if (file == null || file.isEmpty()) {
+            return null;
         }
-        try{
-            //1. 원본 파일명에서 확장자 추출
+
+        try {
+            // 2. 저장할 디렉토리의 Path 객체 생성 (운영체제와 무관한 Path 사용)
+            Path uploadPath = Path.of(uploadDir);
+            
+            // 3. [핵심 방어 코드!] 디렉토리가 없으면 생성 (Docker 권한 문제 방지)
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath); 
+            }
+
+            // 4. 고유한 파일 이름 생성 (UUID 사용)
             String originalFilename = file.getOriginalFilename();
-            String extension = originalFilename != null && originalFilename.contains(".") 
-                ? originalFilename.substring(originalFilename.lastIndexOf(".")) 
-                : "";
+            String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+            String filename = UUID.randomUUID().toString() + extension;
             
-            //2. UUID로 고유한 파일명 생성
-            String storedFilename = UUID.randomUUID().toString() + extension;
-            
-            //3. 저장할 경로 생성
-            Path destinationPath = Paths.get(uploadDir, storedFilename);
-            
-            //4. 파일 저장
-            Files.copy(file.getInputStream(), destinationPath);
-            log.info("파일 저장 성공  :{}", destinationPath);
+            // 5. 실제 저장될 파일 경로 (Path.of 사용)
+            Path filePath = uploadPath.resolve(filename);
 
-            return "/images/" + storedFilename;
+            // 6. 파일 저장 (transferTo)
+            file.transferTo(filePath.toFile());
+            
+            log.info("파일 저장 성공: {}", filePath.toString());
 
-        }catch(IOException e){
-            log.error("파일 저장 실패", e);
-            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
+            // 7. 브라우저 접근용 논리적 경로 반환 (예: /images/uuid.jpg)
+            return "/images/" + filename;
+
+        } catch (IOException e) {
+            log.error("파일 저장 실패: {}", e.getMessage(), e);
+            // FileUtil에서 CustomException을 던지도록 처리 (GlobalExceptionHandler가 받음)
+            throw new CustomException(ErrorCode.FILE_UPLOAD_FAILED, e.getMessage()); 
+            
+        } catch (Exception e) {
+            log.error("파일 처리 중 알 수 없는 오류 발생: {}", e.getMessage(), e);
+            throw new CustomException(ErrorCode.FILE_UPLOAD_FAILED, "알 수 없는 파일 처리 오류");
         }
     }
-
-    //서버에서 파일 삭제
-    public void deleteFile(String fileUrl){
-        if(fileUrl == null || fileUrl.isEmpty()){
+    
+    /**
+     * 파일 삭제
+     * @param fileUrl 삭제할 파일의 논리적 경로 (예: /images/uuid.jpg)
+     */
+    public void deleteFile(String fileUrl) {
+        if (fileUrl == null || fileUrl.isEmpty() || fileUrl.equals("null")) {
             return;
         }
 
         try {
-            //1. url에서 파일명 추출
-            String filename = fileUrl.substring(fileUrl.lastIndexOf("/") +1);
-            //2. 실제 파일 경로
-            Path filePath = Paths.get(uploadDir + filename);
-            //3. 파일 삭제
-            Files.deleteIfExists(filePath);
-            log.info("파일 삭제 성공 : {}", filePath);
+            // 1. 논리적 경로 -> 물리적 경로 변환 ( /images/ 제거)
+            String filename = fileUrl.replace("/images/", "");
+            Path filePath = Path.of(uploadDir, filename);
 
-        } catch (IOException e) { 
-            log.error("파일 삭제 실패", e);
-            //삭제 실패는 치명적인 오류가 아니라서 예외 x
+            // 2. 파일이 실제로 존재하면 삭제
+            if (Files.exists(filePath)) {
+                Files.delete(filePath);
+                log.info("파일 삭제 성공: {}", filename);
+            }
+        } catch (Exception e) {
+            log.warn("파일 삭제 실패 (파일이 이미 없을 수 있음): {}", fileUrl);
+            // 삭제 실패는 치명적이지 않으므로 WARN만 기록하고 에러를 던지지 않음
         }
     }
 }
