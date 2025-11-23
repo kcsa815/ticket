@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -31,7 +32,11 @@ public interface BookingRepository extends JpaRepository<Booking, Long>{
            "WHERE b.user = :user " + 
            "ORDER BY b.createdAt DESC")
     List<Booking> findByUserWithFetch(@Param("user") User user);
+    
 
+    @Modifying // 👈 [필수!] 추가
+    @Query("DELETE FROM Booking b WHERE b.performance.id = :performanceId")
+    void deleteByPerformanceId(@Param("performanceId") Long performanceId);
 
     //예매 취소를 위해 Booking ID로 조회 시 비관적 락을 검
     @Lock(LockModeType.PESSIMISTIC_WRITE)

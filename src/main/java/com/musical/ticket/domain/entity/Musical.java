@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
-// @Builder를 제거하고, @Getter만 유지
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -36,9 +35,13 @@ public class Musical {
     @Column(name = "category", length = 50, nullable = false)
     private String category;
     
-    // ... (timestamps)
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
+    
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
-    // ---  Builder를 '수동 생성자'로 대체 ---
+    // [수동 생성자] Lombok Builder 대신 사용
     public Musical(String title, String description, String posterImageUrl, Integer runningTime, String ageRating, String category) {
         this.title = title;
         this.description = description;
@@ -46,15 +49,26 @@ public class Musical {
         this.runningTime = runningTime;
         this.ageRating = ageRating;
         this.category = (category != null) ? category : "DEFAULT";
-    }   
+    }
 
-    // (update 메서드는 동일)
+    // [수동 Update 메서드]
     public void update(String title, String description, String posterImageUrl, Integer runningTime, String ageRating, String category) {
         this.title = title;
         this.description = description;
-        this.posterImageUrl = posterImageUrl;
-        this.runningTime = runningTime;
+        this.posterImageUrl = (posterImageUrl != null) ? posterImageUrl : this.posterImageUrl;
+        this.runningTime = (runningTime != null) ? runningTime : this.runningTime;
         this.ageRating = ageRating;
         this.category = (category != null) ? category : "DEFAULT";
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
     }
 }

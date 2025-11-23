@@ -14,6 +14,7 @@ import java.util.List;
 */ 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -22,6 +23,10 @@ import jakarta.persistence.LockModeType;
 
 @Repository
 public interface PerformanceSeatRepository extends JpaRepository<PerformanceSeat, Long>{
+
+    @Modifying // 
+    @Query("DELETE FROM PerformanceSeat ps WHERE ps.performance.id = :performanceId")
+    void deleteByPerformanceId(@Param("performanceId") Long performanceId);
 
     // 동시성 제어를 위해 ID 리스트로 좌석들을 조회하며 비관적락을 검
     @Lock(LockModeType.PESSIMISTIC_WRITE)
@@ -32,4 +37,5 @@ public interface PerformanceSeatRepository extends JpaRepository<PerformanceSeat
         "JOIN ps.performance p " +
         "WHERE p.musical.id = :musicalId")
     List<Object[]> findMinMaxPriceByMusicalId(@Param("musicalId") Long musicalId);
+    
 }
