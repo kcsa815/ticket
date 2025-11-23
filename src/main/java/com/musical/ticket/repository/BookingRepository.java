@@ -40,4 +40,6 @@ public interface BookingRepository extends JpaRepository<Booking, Long>{
            "LEFT JOIN FETCH ps.seat s " +
            "WHERE b.id = :bookingId")
     Optional<Booking> findByIdWithPessimisticLock(@Param("bookingId") Long bookingId);
+
+    void deleteByPerformanceId(Long id);
 }

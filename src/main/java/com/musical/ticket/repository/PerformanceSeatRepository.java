@@ -32,4 +32,6 @@ public interface PerformanceSeatRepository extends JpaRepository<PerformanceSeat
         "JOIN ps.performance p " +
         "WHERE p.musical.id = :musicalId")
     List<Object[]> findMinMaxPriceByMusicalId(@Param("musicalId") Long musicalId);
+
+    void deleteByPerformanceId(Long id);
 }

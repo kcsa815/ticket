@@ -7,19 +7,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+
 import com.musical.ticket.dto.musical.MusicalResDto;
 import com.musical.ticket.dto.musical.MusicalSaveReqDto;
 import com.musical.ticket.service.MusicalService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
 
 @RestController
 @RequestMapping("/api/musicals")
@@ -28,29 +29,27 @@ public class MusicalController {
 
     private final MusicalService musicalService;
 
-    //(Admin) 뮤지컬 등록(C)
-    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    //(Admin) 뮤지컬 등록(C) - (동일)
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<MusicalResDto> saveMusical(
-        @Valid @ModelAttribute MusicalSaveReqDto reqDto
-    ) {
-        MusicalResDto responseDto = musicalService.saveMusical(reqDto);
+        @Valid @RequestPart("musicalDto") MusicalSaveReqDto reqDto,
+        @RequestPart(value = "posterImage", required = false) MultipartFile posterImage 
+    ){
+        MusicalResDto responseDto = musicalService.saveMusical(reqDto, posterImage);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
     
-    //(User/All)뮤지컬 전체 목록 조회(R)
+    //(User/All)뮤지컬 전체 목록 조회(R) - (동일)
     @GetMapping
     public ResponseEntity<List<MusicalResDto>> getAllMusicals(
-            // [추가] "section"이라는 쿼리 파라미터를 받음
-            // (required = false : 이 파라미터는 필수가 아님)
             @RequestParam(name = "section", required = false) String section
     ) {
-        // [수정] Service에 section 값을 전달
         List<MusicalResDto> responseDtos = musicalService.getAllMusicals(section);
         return ResponseEntity.ok(responseDtos);
     }
 
-    //(User/All) 뮤지컬 상세 조회(R)
+    //(User/All) 뮤지컬 상세 조회(R) - (동일)
     @GetMapping("/{musicalId}")
     public ResponseEntity<MusicalResDto> getMusicalById(@PathVariable Long musicalId){
         MusicalResDto responseDto = musicalService.getMusicalById(musicalId);
@@ -62,18 +61,21 @@ public class MusicalController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<MusicalResDto> updateMusical(
         @PathVariable Long musicalId,
-        @Valid @ModelAttribute MusicalSaveReqDto reqDto
+        // 👇 [Fix 1: @RequestPart로 DTO 수신]
+        @Valid @RequestPart("musicalDto") MusicalSaveReqDto reqDto,
+        // 👇 [Fix 2: MultipartFile 파라미터 추가]
+        @RequestPart(value = "posterImage", required = false) MultipartFile posterImage
     ){
-        MusicalResDto respondResDto = musicalService.updateMusical(musicalId, reqDto);
+        // 👇 [Fix 3: Service 호출 시 posterImage를 정상적으로 전달]
+        MusicalResDto respondResDto = musicalService.updateMusical(musicalId, reqDto, posterImage);
         return ResponseEntity.ok(respondResDto);
     }
     
-    //(Admin)뮤지컬 삭제(D)
+    //(Admin)뮤지컬 삭제(D) - (동일)
     @DeleteMapping("/{musicalId}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteMusical(@PathVariable Long musicalId){
         musicalService.deleteMusical(musicalId);
         return ResponseEntity.noContent().build();
     }
- 
 }

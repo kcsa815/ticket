@@ -26,8 +26,6 @@ public class MusicalSaveReqDto {
 
     private String description;
 
-    private MultipartFile posterImage;
-
     private String category;
 
     @NotNull
@@ -45,5 +43,10 @@ public class MusicalSaveReqDto {
                 this.runningTime,
                 this.ageRating,
                 this.category);
+    }
+
+    public MultipartFile getPosterImage() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getPosterImage'");
     }
 }

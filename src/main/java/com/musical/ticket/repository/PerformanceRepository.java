@@ -36,4 +36,6 @@ public interface PerformanceRepository extends JpaRepository<Performance, Long> 
               "WHERE v.region = :region")
        List<Performance> findByVenueRegionWithFetch(@Param("region") String region);
 
+    List<Performance> findByMusicalId(Long musicalId);
+
 }
