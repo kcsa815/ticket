@@ -12,17 +12,7 @@
 </ul>
 <br>
 
-## 🛠 Tech Stack
-### Frontend
-- **Core:** <img src="https://img.shields.io/badge/react-61DAFB?style=flat&logo=react&logoColor=white"/> <img src="https://img.shields.io/badge/typescript-3178C6?style=flat&logo=typescript&logoColor=white"/>  <img src="https://img.shields.io/badge/vite-646CFF?style=flat&logo=vite&logoColor=white"/>
-- **Styling:** <img src="https://img.shields.io/badge/cssmodules-000000?style=flat&logo=cssmodules&logoColor=white"/>
-- **State Management:** <img src="https://img.shields.io/badge/Context API-000000?style=flat&logo=&logoColor=white"/>
-- **Libraries:** <img src="https://img.shields.io/badge/axios-000000?style=flat&logo=axios&logoColor=white"/> 
-                  <img src="https://img.shields.io/badge/Reactrouter-61DAFB?style=flat&logo=reactrouter&logoColor=white"/>
-                  <img src="https://img.shields.io/badge/React Calendar-61DAFB?style=flat&logo=react&logoColor=white"/>
-                  <img src="https://img.shields.io/badge/React Simple Maps-61DAFB?style=flat&logo=react&logoColor=white"/>
-                  <img src="https://img.shields.io/badge/React Draggable-61DAFB?style=flat&logo=react&logoColor=white"/>
-### Backend
+## 🛠 기술 스택
 - **Framework:** <img src="https://img.shields.io/badge/springboot-6DB33F?style=flat&logo=springboot&logoColor=white"/>
 - **Security:** <img src="https://img.shields.io/badge/springsecurity-6DB33F?style=flat&logo=springsecurity&logoColor=white"/> <img src="https://img.shields.io/badge/jwt-6DB33F style=flat&logo=springboot&logoColor=white"/>
 - **Database:** <img src="https://img.shields.io/badge/mysql-4479A1?style=flat&logo=mysql&logoColor=white"/> <img src="https://img.shields.io/badge/hibernate-59666C?style=flat&logo=hibernate&logoColor=white"/>
@@ -70,3 +60,11 @@
 
 ## 🖥️ Screen Shots
 (주요 기능 스크린샷을 3~4장 :메인화면, 좌석선택화면, 지도화면 등)
+<div style="display:flex;">
+  <img width="500" height="auto" alt="image" src="https://github.com/user-attachments/assets/db4f3028-ecd2-41cb-9fbc-a3d9830779aa" />
+  <img width="500" height="auto" alt="image" src="https://github.com/user-attachments/assets/41dada74-28b7-46d4-a52f-42e4751bafec" />
+  <img width="500" height="auto" alt="image" src="https://github.com/user-attachments/assets/492c3cfd-3ea7-415e-9d32-ec8f9a5b4205" />
+  <img width="500" height="auto" alt="image" src="https://github.com/user-attachments/assets/206b3102-0429-4f54-b730-3a4fcf113141" />
+</div>
+
+
