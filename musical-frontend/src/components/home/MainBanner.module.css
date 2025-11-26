@@ -1,0 +1,38 @@
+.bannerContainer{
+    width: 100%;
+    margin-bottom: 30px;
+    background-color: #111111;
+    overflow: hidden;  /* 슬라이더가 빠져나가지 않게 */
+    box-sizing: border-box;
+    padding-left: 1px;
+    padding-right: 1px;
+}
+
+.bannerContainer :global(.slick-list){
+    margin-left: -1px;
+    margin-right: -1px;
+}
+
+.slideItem{
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 450px;
+}
+
+.bannerImage{
+    width: auto;
+    height: 450px;
+    max-width: 100%;
+}
+
+
+.bannerContainer :global(.slick-dots){
+     bottom: 15px;  /*점 위치 아래로 */
+}
+
+.bannerContainer :global(.slick-dots li button::before){
+    color:white;
+    font-size: 10px;
+}

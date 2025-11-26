@@ -1,0 +1,192 @@
+.pageContainer {
+  padding: 20px;
+}
+
+.loading, .error {
+  font-size: 1.5rem;
+  text-align: center;
+  margin-top: 50px;
+}
+
+/* (신규) 1. 좌/우 메인 레이아웃 (Req 1) */
+.mainLayout {
+  display: flex;
+  gap: 40px;
+  margin-top: 30px; 
+}
+
+/* --------------------------------- */
+/* --- 2. 왼쪽 컬럼 (Req 2, 4) --- */
+/* --------------------------------- */
+.leftColumn {
+  flex: 3; /* 3의 비율을 차지 */
+  width: 0; /* flex-grow 계산을 위해 */
+}
+
+.title {
+  font-size: 1.8rem;
+  margin-top: 0;
+  margin-bottom: 20px; /* 포스터 섹션과의 간격 */
+}
+
+/* 2-1. (상단) 포스터 + 기본 정보 섹션 */
+.topInfoSection {
+  display: flex;
+  gap: 30px;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 30px;
+}
+
+.posterImage {
+  width: 300px;
+  height: 420px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  flex-shrink: 0;
+}
+
+.metaInfo {
+  flex-grow: 1;
+}
+
+.metaInfo p { /* 관람시간, 등급 */
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+/* 2-2. (하단) 상세 정보 (스크롤) */
+.fullDescriptionSection {
+  margin-top: 30px;
+}
+.fullDescriptionSection h3 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+}
+
+/* (Req 2) 상세 정보 스크롤 박스 */
+.descriptionBox {
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.8;
+  white-space: pre-wrap; /* \n 줄바꿈 적용 */
+}
+
+/* descriptionBox내부의 모든 img태그 */
+.descriptionBox :global(img) {
+  max-width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  margin: 15px 0;
+}
+
+.descriptionBox :global(p){
+  margin-bottom: 15px;
+}
+
+
+/* ---------------------------------- */
+/* ---  3. 오른쪽 컬럼 (Req 3, 4) --- */
+/* ---------------------------------- */
+.rightColumn {
+  flex: 1.5; /* 2의 비율을 차지 */
+  width: 0; /* flex-grow 계산을 위해 */
+  position: relative;
+  z-index: 1;
+}
+
+.rightColumn h3 {
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+}
+
+.calendarContainer {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  overflow: hidden; /* 캘린더 모서리 */
+  position : relative;
+  z-index: 5;
+}
+
+.performanceSection {
+  margin-top: 20px;
+  position: relative;
+  z-index: 10;
+  background: #fff;
+}
+.performanceSection h4 {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+.performanceList {
+  list-style: none;
+  padding: 0;
+  max-height: 300px; /* (스크롤 높이) */
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  position: relative;
+  z-index: 0;
+  border-radius: 12px;
+}
+
+.listHeader { /*선택된 날짜*/
+  background-color: #f8f8f8; /* 헤더 배경색 */
+  padding: 10px 15px;
+  font-weight: bold;
+  border-bottom: 1px solid #ddd;
+}
+
+.performanceItem {    /*회차 아이템(li)*/
+  display: block; 
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
+/* (마지막 아이템의 하단 구분선 제거) */
+.performanceItem:last-child {
+  border-bottom: none;
+}
+.performanceItem:hover { background-color: #f9f9f9; }
+
+.selectedPerf{
+  background-color: #fff4f4 !important;
+  border-left: 3px solid #d9534f;
+  padding-left: 12px;
+}
+
+/*  "회차가 없습니다" 메시지 스타일 */
+.noItem {
+  padding: 20px;
+  text-align: center;
+  color: #777;
+}
+
+.performanceInfo strong {
+  font-size: 1.1rem; color: #333;
+}
+.performanceInfo span {
+  margin-left: 15px; color: #666;
+}
+
+.bookingActions{
+  margin-top: 15px;
+}
+.bookButton {
+  display: block;
+  width: 100%;
+  height: 50px;
+  text-align: center;
+  margin-top: 10px;
+  background-color: #93211d; color: white; border: none;
+  padding: 10px 15px; border-radius: 5px; cursor: pointer;
+  text-decoration: none; font-weight: bold;
+  border-radius: 12px;
+}
+.bookButton:hover { background-color: #771410; }
+.bookButton:disabled{ /*비활성화 시 스타일*/
+  background-color: #aaa;
+  cursor: not-allowed;
+}
