@@ -17,6 +17,23 @@
 
 <br>
 
+### 기능흐름도
+ <div style="display:flex;">
+   <img width="400" height="auto" alt="image" src="https://github.com/user-attachments/assets/ab5887bb-e6bf-4eba-81e9-2365515d1e90" />
+   <img width="400" height="auto" alt="image" src="https://github.com/user-attachments/assets/b91899c3-81ec-4e0d-b2cb-2b0382eb2104" />
+</div>
+<div style="display:flex;">
+  <img width="400" height="auto" alt="image" src="https://github.com/user-attachments/assets/0e90fe62-7173-49b6-aa57-cf793b9a40a5" />
+  <img width="400" height="auto" alt="image" src="https://github.com/user-attachments/assets/3f92fd16-c18a-441c-8b0d-1a6a602365c3" />
+</div>
+
+ <br>
+ 
+ ### ERD
+<img width="1323" height="714" alt="DB_ERD" src="https://github.com/user-attachments/assets/de1f1fc3-43ac-44e2-9dcc-234557ee34ff" />
+
+<br>
+
 ### Tech Stack
 
 | **백엔드** | | **프론트엔드** | |
@@ -87,23 +104,6 @@
 - **해결:** DTO 필드명을 명확히 통일하고, Spring Security 설정에서 배포된 프론트엔드 도메인에 대한 CORS 허용 설정 추가.
 
   <br>
-
-### 기능흐름도
- <div style="display:flex;">
-   <img width="500" height="auto" alt="image" src="https://github.com/user-attachments/assets/ab5887bb-e6bf-4eba-81e9-2365515d1e90" />
-   <img width="500" height="auto" alt="image" src="https://github.com/user-attachments/assets/b91899c3-81ec-4e0d-b2cb-2b0382eb2104" />
-</div>
-<div style="display:flex;">
-  <img width="500" height="auto" alt="image" src="https://github.com/user-attachments/assets/0e90fe62-7173-49b6-aa57-cf793b9a40a5" />
-  <img width="500" height="auto" alt="image" src="https://github.com/user-attachments/assets/3f92fd16-c18a-441c-8b0d-1a6a602365c3" />
-</div>
-
- <br>
- 
- ### ERD
-<img width="1323" height="714" alt="DB_ERD" src="https://github.com/user-attachments/assets/de1f1fc3-43ac-44e2-9dcc-234557ee34ff" />
-
-<br>
 
 ### Screen Shots
 <div style="display:flex;">
