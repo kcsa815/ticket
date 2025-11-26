@@ -50,11 +50,11 @@
 
 #### 1. 좌석 예매 시스템 (Interactive Booking)
 - **좌표(X, Y) 기반**의 실제 공연장 좌석 배치도 구현
-- `react-draggable`을 이용한 예매 팝업창 이동 기능
+- **react-draggable**을 이용한 예매 팝업창 이동 기능
 - 좌석 등급(VIP, R, S, A)별 색상 구분 및 실시간 잔여석 확인
 
 #### 2. 지역별 공연 조회 (Interactive Map)
-- `TopoJSON` 데이터를 활용한 대한민국 지도 시각화
+- **TopoJSON** 데이터를 활용한 대한민국 지도 시각화
 - 지역 클릭 시 해당 지역(`SEOUL`, `BUSAN` 등)의 공연 목록 비동기 조회
 
 #### 3. 관리자(Admin) 기능
