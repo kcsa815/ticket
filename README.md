@@ -36,20 +36,15 @@
 
 ### Tech Stack
 
-| **백엔드** | | **프론트엔드** | |
-|-----------|------------|----------------|------------|
-| **Framework** | <img src="https://img.shields.io/badge/springboot-6DB33F?style=flat&logo=springboot&logoColor=white"/> | **Core** | <img src="https://img.shields.io/badge/react-61DAFB?style=flat&logo=react&logoColor=white"/> <img src="https://img.shields.io/badge/typescript-3178C6?style=flat&logo=typescript&logoColor=white"/> <img src="https://img.shields.io/badge/vite-646CFF?style=flat&logo=vite&logoColor=white"/> |
-| **Security** | <img src="https://img.shields.io/badge/springsecurity-6DB33F?style=flat&logo=springsecurity&logoColor=white"/> <br> <img src="https://img.shields.io/badge/jwt-6DB33F?style=flat&logo=jsonwebtokens&logoColor=white"/> | **Styling** | <img src="https://img.shields.io/badge/cssmodules-000000?style=flat&logo=cssmodules&logoColor=white"/> |
+| **Back-end** | | **Front-end** | | **DevOps** | |
+|-----------|------------|----------------|------------|----------------|------------|
+| **Framework** | <img src="https://img.shields.io/badge/springboot-6DB33F?style=flat&logo=springboot&logoColor=white"/> | **Core** | <img src="https://img.shields.io/badge/react-61DAFB?style=flat&logo=react&logoColor=white"/> <img src="https://img.shields.io/badge/typescript-3178C6?style=flat&logo=typescript&logoColor=white"/> <img src="https://img.shields.io/badge/vite-646CFF?style=flat&logo=vite&logoColor=white"/> |**Deploy** |   <img src="https://img.shields.io/badge/vercel-000000?style=flat&logo=vercel&logoColor=white"/> <img src="https://img.shields.io/badge/render-000000?style=flat&logo=render&logoColor=white"/> |
+| **Security** | <img src="https://img.shields.io/badge/springsecurity-6DB33F?style=flat&logo=springsecurity&logoColor=white"/> <br> <img src="https://img.shields.io/badge/jwt-6DB33F?style=flat&logo=jsonwebtokens&logoColor=white"/> | **Styling** | <img src="https://img.shields.io/badge/cssmodules-000000?style=flat&logo=cssmodules&logoColor=white"/>  |**DB Hosting** | <img src="https://img.shields.io/badge/Aiven Cloud MySQL-000000?style=flat&logo=aiven&logoColor=white"/> |
 | **Database** | <img src="https://img.shields.io/badge/mysql-4479A1?style=flat&logo=mysql&logoColor=white"/> <br> <img src="https://img.shields.io/badge/hibernate-59666C?style=flat&logo=hibernate&logoColor=white"/> | **State Management** | <img src="https://img.shields.io/badge/Context API-000000?style=flat&logo=&logoColor=white"/> |
 | **Build** | <img src="https://img.shields.io/badge/gradle-02303A?style=flat&logo=gradle&logoColor=white"/> | **Libraries** | <img src="https://img.shields.io/badge/axios-000000?style=flat&logo=axios&logoColor=white"/> <br> <img src="https://img.shields.io/badge/Reactrouter-61DAFB?style=flat&logo=reactrouter&logoColor=white"/> <br> <img src="https://img.shields.io/badge/React Calendar-61DAFB?style=flat&logo=react&logoColor=white"/> <br> <img src="https://img.shields.io/badge/React Simple Maps-61DAFB?style=flat&logo=react&logoColor=white"/> <br> <img src="https://img.shields.io/badge/React Draggable-61DAFB?style=flat&logo=react&logoColor=white"/> |
 
-
 <br>
 
-#### DevOps
-- **Deploy:** <img src="https://img.shields.io/badge/vercel-000000?style=flat&logo=vercel&logoColor=white"/>, <img src="https://img.shields.io/badge/render-000000?style=flat&logo=render&logoColor=white"/>
-- **DB Hosting:** <img src="https://img.shields.io/badge/Aiven Cloud MySQL-000000?style=flat&logo=aiven&logoColor=white"/>
-<br>
 
 - ### 백엔드 핵심 기능
 
