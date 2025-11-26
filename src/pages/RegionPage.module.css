@@ -1,0 +1,124 @@
+.pageContainer {
+  padding: 20px 0; /* (content-wrapper가 좌우 여백을 담당) */
+}
+
+.pageTitle {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* (Req 1) 1:2 비율의 좌우 레이아웃 */
+.mainLayout {
+  display: flex;
+  gap: 30px;
+}
+
+/* (1) 왼쪽 (지도) */
+.mapContainer {
+  flex: 1; /* 1의 비율 */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fdfdfd;
+}
+
+/* (지도 스타일) */
+.geoDefault {
+  fill: #EEE;
+  stroke: #FFF;
+  stroke-width: 0.5;
+  outline: none;
+  cursor: pointer;
+  transition: fill 0.2s;
+}
+.geoDefault:hover {
+  fill: #f0c8c7; /* (마우스 오버 색상) */
+  outline: none;
+}
+.geoSelected {
+  fill: #d9534f; /* (선택된 지역 색상) */
+  stroke: #FFF;
+  stroke-width: 0.5;
+  outline: none;
+  cursor: pointer;
+}
+
+
+/* 2. 오른쪽 (공연 목록) */
+.listContainer {
+  flex: 1;
+  max-height: 600px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #fff; /* 배경색 추가 */
+}
+.listContainer h3 {
+  margin: 0 0 15px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #f0f0f0;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.performanceList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* --- 👇 [수정!] 목록 아이템 스타일 (Flex 레이아웃) --- */
+.performanceItem {
+  border-bottom: 1px solid #eee;
+  padding: 15px 0;
+  transition: background-color 0.2s;
+}
+.performanceItem:last-child {
+  border-bottom: none;
+}
+.performanceItem:hover {
+  background-color: #f9f9f9; /* 마우스 올리면 살짝 회색 */
+}
+
+/* (링크 태그가 flex 컨테이너가 됨) */
+.itemLink {
+  display: flex;
+  text-decoration: none;
+  color: inherit;
+  gap: 15px; /* 포스터와 텍스트 사이 간격 */
+  align-items: flex-start;
+}
+
+/* (포스터 썸네일) */
+.posterThumb {
+  width: 60px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid #eee;
+  flex-shrink: 0; /* 찌그러짐 방지 */
+}
+
+/* (텍스트 정보 영역) */
+.itemInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.itemInfo strong {
+  font-size: 1.1rem;
+  color: #333;
+  line-height: 1.2;
+}
+.itemInfo p {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0;
+}
+.itemInfo .date {
+  font-size: 0.85rem;
+  color: #999;
+}
