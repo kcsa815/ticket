@@ -102,10 +102,10 @@
 
 ### Screen Shots
 <div style="display:flex;">
-  <img width="500" height="auto" alt="image" src="https://github.com/user-attachments/assets/db4f3028-ecd2-41cb-9fbc-a3d9830779aa" />
-  <img width="500" height="auto" alt="image" src="https://github.com/user-attachments/assets/41dada74-28b7-46d4-a52f-42e4751bafec" />
-  <img width="500" height="auto" alt="image" src="https://github.com/user-attachments/assets/492c3cfd-3ea7-415e-9d32-ec8f9a5b4205" />
-  <img width="500" height="auto" alt="image" src="https://github.com/user-attachments/assets/206b3102-0429-4f54-b730-3a4fcf113141" />
+  <img width="400" height="auto" alt="image" src="https://github.com/user-attachments/assets/db4f3028-ecd2-41cb-9fbc-a3d9830779aa" />
+  <img width="400" height="auto" alt="image" src="https://github.com/user-attachments/assets/41dada74-28b7-46d4-a52f-42e4751bafec" />
+  <img width="400" height="auto" alt="image" src="https://github.com/user-attachments/assets/492c3cfd-3ea7-415e-9d32-ec8f9a5b4205" />
+  <img width="400" height="auto" alt="image" src="https://github.com/user-attachments/assets/206b3102-0429-4f54-b730-3a4fcf113141" />
 </div>
 
 
